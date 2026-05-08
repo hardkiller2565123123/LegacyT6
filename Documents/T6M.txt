@@ -1,0 +1,151 @@
+# T6M Source Documentation
+
+## Overview
+
+T6M source cleanup focused on making the older matchmaking, profile, and Steam bridge code compile without missing backend systems.
+
+The goal is not to fully restore online services yet. The goal is to make the source stable enough to build and continue development.
+
+---
+
+## Current Build Direction
+
+T6M currently uses simple local placeholder systems for missing backend calls.
+
+This avoids errors from missing libraries and missing networking exports while the source is being repaired.
+
+---
+
+## Work Completed
+
+### Removed Duplicate Code
+
+`bdProfile.cpp` had duplicate pasted code.
+
+This caused errors such as:
+
+```txt
+function already has a body
+redefinition errors
+```
+
+The duplicate code was removed so every function only exists once.
+
+---
+
+### Fixed Profile Data Structure
+
+The profile code expects this field:
+
+```cpp
+profiles->results[i].xNPID
+```
+
+So the profile result entry structure keeps the member named:
+
+```cpp
+struct PMGetPT5ProfileDataEntry
+{
+    xNPID xNPID;
+    char* data;
+};
+```
+
+---
+
+### Fixed Rich Presence Calls
+
+Steam friends code calls rich presence like this:
+
+```cpp
+xNP_GetFriendRichPresence(id, "currentGame")
+```
+
+A matching overload was added so the function accepts both:
+
+```cpp
+xNP_GetFriendRichPresence(id)
+xNP_GetFriendRichPresence(id, key)
+```
+
+---
+
+### Simplified Auth Checks
+
+The auth check was changed to avoid missing enum names.
+
+Instead of depending on:
+
+```cpp
+AuthenticateResultOK
+```
+
+the standalone setup checks for:
+
+```cpp
+result->result != 0
+```
+
+`0` means success in the temporary stub system.
+
+---
+
+### Matchmaking Placeholders
+
+Some matchmaking functions currently send safe placeholder replies instead of using missing backend services.
+
+Examples:
+
+```cpp
+inviteto_match_session
+submit_performance
+get_performance_values
+delete_match_session
+```
+
+This helps prevent crashes while the backend is unfinished.
+
+---
+
+## Known Issues
+
+### PM_SendMessage / Message Bridge
+
+The PM/message system is still not fully repaired.
+
+Related code may still need cleanup around:
+
+```cpp
+PM_SendMessage
+xNP_SendMessage
+NP_SendMessage
+dw_messaging_send_global_im
+```
+
+For now, this system is being left as a placeholder until the rest of the project builds properly.
+
+Recommended current action:
+
+* Leave the simple message stub in place
+* Do not connect it to missing real backend functions yet
+* Fix it later after the project compiles cleanly
+
+---
+
+## Current Status
+
+T6M currently has:
+
+* Profile code mostly cleaned up
+* Matchmaking using placeholder replies
+* Steam rich presence compile issues reduced
+* Missing backend calls stubbed
+* PM/message bridge still unfinished
+
+---
+
+## Notes for GitHub
+
+This source is currently in a rebuild/cleanup state.
+
+The current version focuses on getting the project compiling without original private backend libraries. Some systems are placeholders and should be treated as unfinished.
