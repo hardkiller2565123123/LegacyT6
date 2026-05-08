@@ -39,6 +39,7 @@ https://archive.org/details/en_visual_studio_community_2013_with_update_5_x86_dv
 * Windows 11 SDK
 * MSVC v142 Build Tools
 * MSVC v143 Build Tools
+* MSVC v120 Build Tools
 * C++ MFC
 * C++ ATL
 * .NET Framework 4.7.2 Tools
