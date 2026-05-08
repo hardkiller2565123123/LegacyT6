@@ -25,6 +25,20 @@ Many older BO2/T6 client sources no longer compile correctly due to:
 
 This repository documents fixes, dependency setup, crash debugging, and restoration work required to make these projects buildable again.
 
+## Credits
+
+Original source code and projects belong to their respective original developers and communities.
+
+This repository only focuses on restoration, cleanup, compatibility fixes, and preservation work for archival and research purposes.
+
+Special credit to:
+
+* PlusOps developers
+* T6M developers
+* FourDeltaOne developers
+* Redacted developers
+* Original BO2 reverse engineering and modding communities
+
 ## Requirements
 
 ### Main Requirement
@@ -47,12 +61,12 @@ https://archive.org/details/en_visual_studio_community_2013_with_update_5_x86_dv
 
 ## Current Project Status
 
-| Project                 | Status                                 |
-| ----------------------- | -------------------------------------- |
-| PlusOpsSource           | Builds partially, pm_sendMessage issue |
-| T6M Source              | Builds but crashes                     |
-| FourDeltaOne.SourceCode | Pending cleanup                        |
-| RedactedSteamBase       | Pending cleanup                        |
+| Project                 | Status                             |
+| ----------------------- | ---------------------------------- |
+| PlusOpsSource           | Partial cleanup completed          |
+| T6M Source              | Major restoration work in progress |
+| FourDeltaOne.SourceCode | Pending cleanup                    |
+| RedactedSteamBase       | Pending cleanup                    |
 
 ## Goals
 
@@ -81,3 +95,4 @@ Some projects may require:
 This repository is intended for archival, educational, offline research, and software restoration purposes only.
 
 No game assets or copyrighted files are included.
+
