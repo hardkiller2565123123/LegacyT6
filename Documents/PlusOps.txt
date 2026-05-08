@@ -1,0 +1,109 @@
+# PlusOps Source Documentation
+
+## Overview
+
+PlusOps only received small cleanup fixes during this rebuild process.
+
+Most of the actual backend, auth, matchmaking, and networking reconstruction work happened on the T6M source instead.
+
+The PlusOps side mainly needed:
+
+* linker cleanup
+* duplicate include cleanup
+* PM_SendMessage cleanup
+* basic compile fixes
+
+---
+
+## Work Completed
+
+### Removed Missing libpm.lib Dependency
+
+The project attempted to link against:
+
+```txt id="6j9d11"
+libpm.lib
+```
+
+That library was missing and caused linker errors.
+
+The dependency was removed from:
+
+* Visual Studio linker settings
+* `.vcxproj` dependency lists
+
+---
+
+### Fixed PM_SendMessage Include Problems
+
+The project previously included:
+
+```cpp id="n8g4f3"
+#include "PM_SendMessage.cpp"
+```
+
+inside a header.
+
+This caused:
+
+* duplicate function body errors
+* linkage conflicts
+* compile instability
+
+The cleanup changed it to:
+
+```cpp id="z1m0x2"
+#include "PM_SendMessage.h"
+```
+
+The `.cpp` file is now compiled normally by the project.
+
+---
+
+### General Compile Cleanup
+
+Additional small cleanup fixes were made around:
+
+* duplicate definitions
+* include ordering
+* placeholder compile fixes
+* unresolved linker cleanup
+
+Most of these changes were only intended to make the source build more cleanly.
+
+---
+
+## Known Issues
+
+### PM / Messaging Layer
+
+The PM/message bridge is still unfinished.
+
+Areas still needing future cleanup include:
+
+```cpp id="o2g8b4"
+PM_SendMessage
+xNP_SendMessage
+NP_SendMessage
+```
+
+For now the placeholder implementation is simply being left in place.
+
+---
+
+## Current Status
+
+PlusOps currently:
+
+* builds more cleanly
+* avoids missing `libpm.lib`
+* has cleaner include handling
+* still has unfinished PM/message systems
+
+---
+
+## Notes for GitHub
+
+This source is currently in a light cleanup state.
+
+Most major reconstruction and backend repair work was focused on the T6M source instead of PlusOps.
