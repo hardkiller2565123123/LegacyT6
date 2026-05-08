@@ -1,0 +1,397 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(364,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (..\Debug\) contains files shared from another project (SteamApiBase.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Zone.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Log.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  TitleUtils.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\titleutils.cpp(10): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+  T6.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Steam_API.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\steam\steam_api.cpp(29): warning C4172: returning address of local variable or temporary
+  SteamUtils.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamUserStats.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamUser.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamRemoteStorage.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamNetworking.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamMatchmakingServers.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamMatchmaking.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamMasterServerUpdater.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamHTTP.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamGameStats.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamGameServerStats.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamGameServer.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamGameCoordinator.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamFriends.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamContentServer.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Generating Code...
+  Compiling...
+  SteamClient.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamApps.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamCommon.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamCallback.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedUtils.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedUserStats.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedUser.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedRemoteStorage.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedNetworking.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedMatchmakingServers.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedMatchmaking.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedMasterServerUpdater.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedHTTP.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedGameStats.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedGameServerStats.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedGameServer.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ProxiedGameCoordinator.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  SteamApiBase.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ServerList.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Scriptability.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Generating Code...
+  Compiling...
+  Popup.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Patterns.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  PatchT6ZM.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(9): warning C4309: 'argument' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(10): warning C4309: 'argument' : truncation of constant value
+  Server.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  PatchT6MP.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(9): warning C4309: 'argument' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(10): warning C4309: 'argument' : truncation of constant value
+  Hooking.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Patch.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Notify.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  MainPatchFunctions.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  InGameConsole.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ingameconsole.cpp(62): warning C4018: '<' : signed/unsigned mismatch
+  HudElem.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\hudelem.cpp(10): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\hudelem.cpp(11): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\hudelem.cpp(12): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\hudelem.cpp(13): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\hudelem.cpp(18): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\hudelem.cpp(93): warning C4244: '=' : conversion from 'short' to 'char', possible loss of data
+  hString.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Global.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  GamePlay.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  FileIO.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Experimental.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Entry.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Storage.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  PM_SendMessage.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  dwMessage.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Generating Code...
+  Compiling...
+  dw_match.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  dw_Handler.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dw_handler.cpp(35): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dw_handler.cpp(70): warning C4101: 'bufpacket' : unreferenced local variable
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dw_handler.cpp(192): warning C4018: '<' : signed/unsigned mismatch
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dw_handler.cpp(233): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dw_handler.cpp(234): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dw_handler.cpp(235): warning C4309: '=' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dw_handler.cpp(236): warning C4309: '=' : truncation of constant value
+  CEG.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg.cpp(32): warning C4101: 'v4' : unreferenced local variable
+  DumpHandler.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\dumphandler.cpp(72): warning C4244: 'return' : conversion from '__int64' to 'DWORD', possible loss of data
+  DLC.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Crypto.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\plusopssource\plusopssource\deps\include\tomcrypt_cfg.h(26): warning C4273: 'malloc' : inconsistent dll linkage
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(642) : see previous definition of 'malloc'
+c:\users\dylan\downloads\sourcecode\plusopssource\plusopssource\deps\include\tomcrypt_cfg.h(27): warning C4273: 'realloc' : inconsistent dll linkage
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(644) : see previous definition of 'realloc'
+c:\users\dylan\downloads\sourcecode\plusopssource\plusopssource\deps\include\tomcrypt_cfg.h(28): warning C4273: 'calloc' : inconsistent dll linkage
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(640) : see previous definition of 'calloc'
+c:\users\dylan\downloads\sourcecode\plusopssource\plusopssource\deps\include\tomcrypt_cfg.h(29): warning C4273: 'free' : inconsistent dll linkage
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(641) : see previous definition of 'free'
+c:\users\dylan\downloads\sourcecode\plusopssource\plusopssource\deps\include\tomcrypt_cfg.h(31): warning C4273: 'qsort' : inconsistent dll linkage
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(452) : see previous definition of 'qsort'
+c:\users\dylan\downloads\sourcecode\plusopssource\plusopssource\deps\include\tomcrypt_cfg.h(35): warning C4273: 'clock' : inconsistent dll linkage
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\time.h(184) : see previous definition of 'clock'
+  Command.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ColoredName.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  CEG_Zone.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(5): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(6): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(7): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(8): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(9): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(10): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(11): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(14): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(15): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(16): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(17): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(18): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(19): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(20): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(21): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(22): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(23): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(24): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(27): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(28): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(29): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(30): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(31): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(32): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(33): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(34): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(35): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(36): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(37): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(42): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(43): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(44): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(45): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(46): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(47): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(48): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(49): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(50): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(51): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(52): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(53): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(54): warning C4309: 'initializing' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\ceg_zone.cpp(55): warning C4309: 'initializing' : truncation of constant value
+  Brandings.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Bots.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\bots.cpp(39): warning C4018: '<' : signed/unsigned mismatch
+  bdMatchMakingInfo.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  ByteBuffer.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  BitBuffer.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  bdProfile.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Auth.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\auth.cpp(42): warning C4101: 'keyBase' : unreferenced local variable
+  Addresses.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+  Generating Code...
+     Creating library ..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.lib and object ..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.exp
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  T6M.vcxproj -> C:\Users\dylan\Downloads\SourceCode\T6M Source\T6M\SteamApiBase\..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.dll

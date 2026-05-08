@@ -1,0 +1,4 @@
+C:\Users\dylan\Downloads\SourceCode\t6mLeak_[unknowncheats.me]_\NP\r17\server\NPServer\obj\Debug\NPServer.csproj.AssemblyReference.cache
+C:\Users\dylan\Downloads\SourceCode\t6mLeak_[unknowncheats.me]_\NP\r17\server\NPServer\obj\Debug\NPx.Properties.Resources.resources
+C:\Users\dylan\Downloads\SourceCode\t6mLeak_[unknowncheats.me]_\NP\r17\server\NPServer\obj\Debug\NPServer.csproj.GenerateResource.cache
+C:\Users\dylan\Downloads\SourceCode\t6mLeak_[unknowncheats.me]_\NP\r17\server\NPServer\obj\Debug\NPServer.csproj.CoreCompileInputs.cache
