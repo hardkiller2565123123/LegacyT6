@@ -2,142 +2,108 @@
 
 ## Overview
 
-PlusOps is currently being cleaned up so the source can build without missing private libraries or broken legacy networking code.
+PlusOps only received small cleanup fixes during this rebuild process.
 
-This documentation covers the current repair work and what still needs attention.
+Most of the actual backend, auth, matchmaking, and networking reconstruction work happened on the T6M source instead.
 
-## Current Build Direction
+The PlusOps side mainly needed:
 
-The project is using a standalone stub setup for now.
+* linker cleanup
+* duplicate include cleanup
+* PM_SendMessage cleanup
+* basic compile fixes
 
-That means some original online/backend systems are replaced with simple local placeholder functions so the project can compile and continue development without requiring missing libraries such as:
-
-- libpm.lib
-- missing NP backend exports
-- missing PM backend exports
-
-This is not meant to be the final online system. It is only a temporary compile-safe layer.
+---
 
 ## Work Completed
 
 ### Removed Missing libpm.lib Dependency
 
-The project was trying to link against:
+The project attempted to link against:
 
-```txt
+```txt id="6j9d11"
 libpm.lib
 ```
 
-That library was missing, which caused linker errors.
+That library was missing and caused linker errors.
 
-The dependency was removed from the Visual Studio project file under:
+The dependency was removed from:
 
-```txt
-Linker -> Input -> Additional Dependencies
-```
+* Visual Studio linker settings
+* `.vcxproj` dependency lists
 
-### Cleaned PM_SendMessage Setup
+---
 
-The project previously included a `.cpp` file directly inside a header:
+### Fixed PM_SendMessage Include Problems
 
-```cpp
+The project previously included:
+
+```cpp id="n8g4f3"
 #include "PM_SendMessage.cpp"
 ```
 
-That caused duplicate function body errors.
+inside a header.
 
-The correct setup is:
+This caused:
 
-```cpp
+* duplicate function body errors
+* linkage conflicts
+* compile instability
+
+The cleanup changed it to:
+
+```cpp id="z1m0x2"
 #include "PM_SendMessage.h"
 ```
 
-The `.cpp` file should be compiled normally by the project.
+The `.cpp` file is now compiled normally by the project.
 
-### Added xNP Stub Layer
+---
 
-A simple xNP stub layer was added to replace missing backend calls while the project is being rebuilt.
+### General Compile Cleanup
 
-Examples of stubbed functions:
+Additional small cleanup fixes were made around:
 
-```cpp
-xNP_Connect
-xNP_SendMessage
-xNP_WriteUserFile
-xNP_GetxNPID
-xNP_CreateSessionWithCredentials
-```
+* duplicate definitions
+* include ordering
+* placeholder compile fixes
+* unresolved linker cleanup
 
-These return safe placeholder values so the source can keep building.
+Most of these changes were only intended to make the source build more cleanly.
 
-### Fixed Auth Conflicts
-
-The source was mixing real and fake auth types:
-
-```cpp
-NPAuthenticateResult
-xNPAuthenticateResult
-```
-
-For the standalone build, the source should consistently use:
-
-```cpp
-xNPAuthenticateResult
-```
-
-The real `NPAuthenticateResult` should only be used later if the full real NP library/backend is restored.
-
-### Fixed Auth Enum Conflicts
-
-The source had duplicate definitions of values like:
-
-```cpp
-AuthenticateResultOK
-AuthenticateResultBadDetails
-AuthenticateResultUnknown
-```
-
-The standalone stub setup should avoid redefining those names and should use raw result values such as:
-
-```cpp
-0 = success
-```
+---
 
 ## Known Issues
 
-### PM_SendMessage / Message Bridge
+### PM / Messaging Layer
 
-The message bridge is still not fully finished.
+The PM/message bridge is still unfinished.
 
-The source may still produce errors around:
+Areas still needing future cleanup include:
 
-```cpp
+```cpp id="o2g8b4"
 PM_SendMessage
 xNP_SendMessage
 NP_SendMessage
 ```
 
-For now, this part is being left alone until the rest of the source is stable.
+For now the placeholder implementation is simply being left in place.
 
-Recommended current action:
-
-- Keep the simple placeholder function.
-- Do not wire it to real NP/PM networking yet.
-- Revisit it after the project builds cleanly.
+---
 
 ## Current Status
 
-PlusOps currently has:
+PlusOps currently:
 
-- Missing `libpm.lib` removed
-- Local placeholder auth
-- Local placeholder messaging
-- Local placeholder profile file handling
-- Cleaner build direction
-- Message bridge still unfinished
+* builds more cleanly
+* avoids missing `libpm.lib`
+* has cleaner include handling
+* still has unfinished PM/message systems
+
+---
 
 ## Notes for GitHub
 
-This source is currently in cleanup/rebuild state.
+This source is currently in a light cleanup state.
 
-Some networking and online systems are stubbed because original backend libraries are not included. These files are kept simple so the project can be compiled and improved step by step.
+Most major reconstruction and backend repair work was focused on the T6M source instead of PlusOps.
