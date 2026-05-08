@@ -5,76 +5,101 @@ void Patch()
 {
 	switch (*(DWORD*)0x41136F)
 	{
-		// Version 39
-		case 0x75C08500:
-		{
-			Global::Game::Version = GAME_VERSION_39;
-			Global::Game::Type    = GAME_TYPE_ZM;
-			break;
-		}
-		
-		// Version 40
-		case 0x111F9C35:
-		{
-			Global::Game::Version = GAME_VERSION_40;
-			Global::Game::Type    = GAME_TYPE_MP;
-			break;
-		}
-
-		// Version 41
-		case 0x244C8BCC:
-		{
-			Global::Game::Version = GAME_VERSION_41;
-			Global::Game::Type    = GAME_TYPE_ZM;
-			break;
-		}
-
-		// Version 43
-		case 0x30C4835E:
-		{
-			Global::Game::Version = GAME_VERSION_43;
-			Global::Game::Type    = GAME_TYPE_MP;
-			break;
-		}
-		// Dedicated - debug version
-		case 0x0F0C7D8B:
-		{
-			Global::Game::Version = GAME_VERSION_DEDI_DEBUG;
-			Global::Game::Type    = GAME_TYPE_DEDI;
-			break;
-		}
-		default:
-		{
-			Global::Game::Version = GAME_VERSION_ERROR;
-			Global::Game::Type    = GAME_TYPE_ERROR;
-			break;
-		}
+		// Version 39 - Zombies
+	case 0x75C08500:
+	{
+		Global::Game::Version = GAME_VERSION_39;
+		Global::Game::Type = GAME_TYPE_ZM;
+		break;
 	}
 
-	// Fix Version 39 Zombies -> Start Match
-	// Fix Brandings -> va override
+	// Version 40 - Multiplayer
+	case 0x111F9C35:
+	{
+		Global::Game::Version = GAME_VERSION_40;
+		Global::Game::Type = GAME_TYPE_MP;
+		break;
+	}
 
-	Addresses::Assign();							// Done
-	SteamCommon::LoadOverlay();						// Done
-	DumpHandler::Initialize();						// Done
-	//Bots::Initialize();								// Done
-	//ColoredName::Initialize();						// Try To Fix Other Colors abov ^7 and the last Char*
-	//InGameConsole::Initialize();					// Color Fix and KeyEvent fix.
-	ServerList::Initialize();						// Done.
-	//Script::Initialize();							// Kinda Crash for sometime.
-	//Experimental::Initialize();						// Still only shit in here.
-	//Brandings::Initialize();						// Fix hString::va overriden
-	//HudElements::Initialize();						// Done.
-	//DLC::Initialize();								// Done.
-	//GamePlay::Initialize();							// Kinda not finish? nope.
-	CegHandler::Initialize();						// Done.
-	Server::Initialize();							// Doing Shit now.
-	//Zone::Initialize();
+	// Version 41 - Zombies
+	case 0x244C8BCC:
+	{
+		Global::Game::Version = GAME_VERSION_41;
+		Global::Game::Type = GAME_TYPE_ZM;
+		break;
+	}
 
+	// Version 43 - Multiplayer
+	case 0x30C4835E:
+	{
+		Global::Game::Version = GAME_VERSION_43;
+		Global::Game::Type = GAME_TYPE_MP;
+		break;
+	}
+
+	// Version 44 - Multiplayer
+	case 0x1AE85508:
+	{
+		Global::Game::Version = GAME_VERSION_44;
+		Global::Game::Type = GAME_TYPE_MP;
+		break;
+	}
+
+	// Version 44 - Zombies
+	case 0x5E8B3046:
+	{
+		Global::Game::Version = GAME_VERSION_44;
+		Global::Game::Type = GAME_TYPE_ZM;
+		break;
+	}
+
+	// Dedicated - debug version
+	case 0x0F0C7D8B:
+	{
+		Global::Game::Version = GAME_VERSION_DEDI_DEBUG;
+		Global::Game::Type = GAME_TYPE_DEDI;
+		break;
+	}
+
+	default:
+	{
+		char buffer[128];
+
+		sprintf_s(
+			buffer,
+			"Unsupported game version.\n\nSignature: 0x%08X",
+			*(DWORD*)0x41136F);
+
+		MessageBoxA(
+			0,
+			buffer,
+			"PlusOps Version Check",
+			MB_ICONERROR | MB_OK);
+
+		Global::Game::Version = GAME_VERSION_ERROR;
+		Global::Game::Type = GAME_TYPE_ERROR;
+		break;
+	}
+	}
+
+	Addresses::Assign();
+	SteamCommon::LoadOverlay();
+	DumpHandler::Initialize();
+
+	// Keep these disabled until the Version 44 offsets are stable.
+	//ServerList::Initialize();
+	//Server::Initialize();
+
+	// CEG can crash/hang on wrong offsets. Leave off for V44 safe boot.
+	if (Global::Game::Version != GAME_VERSION_44)
+	{
+		CegHandler::Initialize();
+	}
 
 	if (Global::Game::Type == GAME_TYPE_ZM)
 	{
 		Global::Variables::Steam_AppID = 212910;
+
 		if (Global::Game::Version == GAME_VERSION_39)
 		{
 			T6ZM::PatchT6ZM_V39();
@@ -83,10 +108,16 @@ void Patch()
 		{
 			T6ZM::PatchT6ZM_V41();
 		}
+		else if (Global::Game::Version == GAME_VERSION_44)
+		{
+			// Safe boot: do not reuse V41 patches yet.
+			OutputDebugStringA("[Patch] V44 ZM safe boot: skipping old ZM patches\n");
+		}
 	}
 	else if (Global::Game::Type == GAME_TYPE_MP)
 	{
 		Global::Variables::Steam_AppID = 202990;
+
 		if (Global::Game::Version == GAME_VERSION_40)
 		{
 			T6MP::PatchT6MP_V40();
@@ -94,6 +125,10 @@ void Patch()
 		else if (Global::Game::Version == GAME_VERSION_43)
 		{
 			T6MP::PatchT6MP_V43();
+		}
+		else if (Global::Game::Version == GAME_VERSION_44)
+		{
+			T6MP::PatchT6MP_V44();
 		}
 	}
 	else

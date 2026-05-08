@@ -33,6 +33,8 @@ Dvar_RegisterInt_t Addresses::Dvar_RegisterInt;
 
 
 
+
+
 // Custom GSC & CSC Loading
 DWORD Addresses::scriptParseTreeLoad1_loc;
 DWORD Addresses::scriptParseTreeLoad2_loc;
@@ -704,6 +706,183 @@ void Addresses::Assign()
 			Addresses::DLCAppID							= 0x473B20;
 			break;
 		}
+		case GAME_VERSION_44:
+		{
+			/*
+				Version 44 SAFE STARTUP BLOCK
+
+				Goal:
+				- let the game boot
+				- avoid instant dump files
+				- avoid invisible/stuck process
+				- keep only safer core function pointers enabled
+
+				NOTE:
+				These are temporary V43-style placeholders.
+				Do not enable hook/patch locations until you confirm the real V44 offsets.
+			*/
+
+			// Core
+			Addresses::Com_Error = (Com_Error_t)0x58FC30;
+			Addresses::Com_Printf = (Com_Printf_t)0x63A1F0;
+			Addresses::Cbuf_AddText = (Cbuf_AddText_t)0x5C6F10;
+			Addresses::DB_FindXAssetHeader = (DB_FindXAssetHeader_t)0x6F9030;
+			Addresses::DB_AddXAssetLoc = (DB_AddXAssetLoc_t)0x07FDCB0;
+			Addresses::Cmd_AddCommandInternal = (Cmd_AddCommandInternal_t)0x5B3070;
+
+			// File system
+			Addresses::FS_FreeFile = (FS_FreeFile_t)0x6DC730;
+			Addresses::FS_ReadFile = (FS_ReadFile_t)0x513030;
+			Addresses::FS_FCloseFile = (FS_FCloseFile_t)0x494570;
+			Addresses::FS_FOpenFileByMode = (FS_FOpenFileByMode_t)0x521620;
+			Addresses::FS_ListFiles = (FS_ListFiles_t)0x52F100;
+			Addresses::FS_FreeFileList = (FS_FreeFileList_t)0x443EB0;
+			Addresses::FS_FileForHandle = (FS_FileForHandle_t)0x46D830;
+			Addresses::FS_GetFileOsPath = (FS_GetFileOsPath_t)0x688D80;
+
+			// Script core
+			Addresses::Scr_ExecThread = (Scr_ExecThread_t)0x4BB610;
+			Addresses::Scr_FreeThread = (Scr_FreeThread_t)0x5468A0;
+			Addresses::Scr_LoadScriptInternal = (Scr_LoadScriptInternal_t)0x5D2720;
+			Addresses::GScr_LoadScriptAndLabel = (GScr_LoadScriptAndLabel_t)0x416D30;
+			Addresses::G_ShutdownGame = (G_ShutdownGame_t)0x60DCF0;
+
+			Addresses::SL_GetString = (SL_GetString_t)0x602C40;
+			Addresses::SL_ConvertToString = (SL_ConvertToString_t)0x422D10;
+			Addresses::Scr_NotifyNum = (Scr_NotifyNum_t)0x578690;
+			Addresses::Scr_AddString = (Scr_AddString_t)0x4F1650;
+			Addresses::Scr_AddEntity = (Scr_AddEntity_t)0x4C20F0;
+			Addresses::Scr_AddInt = (Scr_AddInt_t)0x57AFF0;
+			Addresses::Scr_GetString = (Scr_GetString_t)0x67C6A0;
+			Addresses::NotifyClient = (NotifyClient_t)0x459520;
+
+			// Dvars
+			Addresses::Dvar_RegisterBool = (Dvar_RegisterBool_t)0x4E0170;
+			Addresses::Dvar_RegisterFloat = (Dvar_RegisterFloat_t)0x4445C0;
+			Addresses::Dvar_RegisterInt = (Dvar_RegisterInt_t)0x5F24E0;
+
+			// Commands
+			Addresses::cmd_argc = 0x2538BDC;
+			Addresses::cmd_argv = 0x2538BFC;
+
+			// Bots / game state pointers
+			Addresses::SV_AddTestClient = (SV_AddTestClient_t)0x5514B0;
+			Addresses::SV_Loaded = (SV_Loaded_t)0x510FC0;
+			Addresses::g_entities = (g_entity_s*)0x21EF7C0;
+
+			// Renderer / UI safe function pointers
+			Addresses::R_AddCmdDrawText = (R_AddCmdDrawText_t)0x711150;
+			Addresses::DrawRotatedPic = (DrawRotatedPic_t)0x710C80;
+			Addresses::GetTextLengthSize = (GetTextLengthSize_t)0x734020;
+
+			// Custom asset read-only/base name
+			Addresses::FS_BaseGameFolderName = 0x8C6A0E;
+
+			/*
+				DANGEROUS PATCH LOCATIONS DISABLED FOR NOW
+
+				These write directly into the EXE.
+				If even one is wrong, you get:
+				- instant dump
+				- game running but invisible
+				- black screen
+				- stuck process in Task Manager
+			*/
+
+			// Custom GSC & CSC Loading
+			Addresses::scriptParseTreeLoad1_loc = 0x00;
+			Addresses::scriptParseTreeLoad2_loc = 0x00;
+			Addresses::scriptParseTreeLoad3_loc = 0x00;
+			Addresses::scriptParseTreeLoad4_loc = 0x00;
+			Addresses::loadGameTypeScript_loc = 0x00;
+			Addresses::loadGameType_loc = 0x00;
+			Addresses::scriptErrorParam_loc = 0x00;
+			Addresses::precacheInitCheck1_loc = 0x00;
+			Addresses::precacheInitCheck2_loc = 0x00;
+			Addresses::precacheInitCheck3_loc = 0x00;
+
+			// Bot patch locations
+			Addresses::BotArray1 = 0x00;
+			Addresses::BotArray2 = 0x00;
+			Addresses::BotArray3 = 0x00;
+			Addresses::BotArraySize1 = 0x00;
+			Addresses::BotArraySize2 = 0x00;
+			Addresses::BotArraySize3 = 0x00;
+			Addresses::BotArraySize4 = 0x00;
+			Addresses::BotTag1 = 0x00;
+			Addresses::BotTag2 = 0x00;
+
+			// Hudelem patching disabled
+			Addresses::HudElem_Alloc = NULL;
+			Addresses::G_LocalizedStringIndex = NULL;
+			Addresses::G_MaterialIndex = NULL;
+			Addresses::ShaderPrecacheLimitation = 0x00;
+
+			// Colored name patching disabled
+			Addresses::ColoredName = 0x00;
+			Addresses::ClientUserinfoChanged = 0x00;
+			Addresses::GetClientName = 0x00;
+			Addresses::GetClientName1 = 0x00;
+			Addresses::GetClientName2 = 0x00;
+			Addresses::GetClientName3 = 0x00;
+			Addresses::ICleanStrHook = 0x00;
+			Addresses::ICleanStr = 0x00;
+			Addresses::NameLength1 = 0x00;
+			Addresses::NameLength2 = 0x00;
+			Addresses::ColorTableFloat = 0x00;
+			Addresses::ColorTableByte = 0x00;
+
+			// Ingame console hooks disabled
+			Addresses::ConsoleCatcher = 0x00;
+			Addresses::ConsoleCatcher2 = 0x00;
+			Addresses::RendererFrame = 0x00;
+			Addresses::RendererFrameO = 0x00;
+			Addresses::RendererStart = 0x00;
+			Addresses::RendererStartO = 0x00;
+			Addresses::RendererWidth = 0x00;
+			Addresses::RendererHeight = 0x00;
+			Addresses::InputUIToCL = 0x00;
+			Addresses::InputExecBinding = 0x00;
+			Addresses::InputExecBindingO = 0x00;
+			Addresses::InputCharEvent = 0x00;
+			Addresses::InputCharEventO = 0x00;
+			Addresses::InputKeyEvent = 0x00;
+			Addresses::InputKeyEventO = 0x00;
+			Addresses::InputMouseX = 0x00;
+			Addresses::InputMouseY = 0x00;
+			Addresses::InputHWND = 0x00;
+
+			// SystemLink server list disabled
+			Addresses::GetServerNameFromList = 0x00;
+			Addresses::GetServerCount = 0x00;
+			Addresses::ServerBaseAddress = 0x00;
+
+			// DW network patching disabled
+			Addresses::custom_gethostbyname = 0x00;
+			Addresses::dw_recvfrom = 0x00;
+			Addresses::dw_sendto = 0x00;
+			Addresses::dw_recv = 0x00;
+			Addresses::dw_send = 0x00;
+			Addresses::dw_connect = 0x00;
+			Addresses::dw_select = 0x00;
+
+			// Branding/window style hooks disabled
+			Addresses::UI_BuildNumber = 0x00;
+			Addresses::GameWindowName1 = 0x00;
+			Addresses::GameWindowName2 = 0x00;
+			Addresses::ConsoleWindowName = 0x00;
+			Addresses::GameWindowStyle1 = 0x00;
+			Addresses::GameWindowStyle2 = 0x00;
+
+			// DLC checks disabled
+			Addresses::MissingDLC = 0x00;
+			Addresses::CheckFlag = 0x00;
+			Addresses::DLCAppID = 0x00;
+
+			break;
+		}
+
+
 	}
 	Addresses::AssignFromPattern();
 }

@@ -1,100 +1,213 @@
 #include "STDInc.h"
+
 Hook::Stomp ServerList::GetServerNameFromListHook;
 Hook::Stomp ServerList::GetServerCountHook;
-int ServerList::ServerCount;
 
+int ServerList::ServerCount = 0;
 
-struct Server_t
+static bool IsValidPtr(DWORD address)
 {
-	char pad[0x3D];//
-	WORD MinPing;
-	WORD MaxPing;
-	WORD Ping;
-	char pad2[0x48];//
-	char ServerName[0x15];
-};
+    return address != 0;
+}
 
+static void DebugLog(const char* text)
+{
+    if (text)
+    {
+        OutputDebugStringA(text);
+        OutputDebugStringA("\n");
+    }
+}
 
-//typedef dvar_t*(__cdecl* FindDvar_t)(const char*);
-//FindDvar_t FindDvar = (FindDvar_t)0x8C6D80;
-
+static bool IsZm()
+{
+    return Global::Game::Type == GameType::GAME_TYPE_ZM;
+}
 
 DWORD ServerList::GetServerNameFromList(int Server)
 {
-	//normaly address is ServerBaseAddress + 0x85 but i have change to 0x88 for some reasons its same LOL
-	return *(DWORD*)((Addresses::ServerBaseAddress + 0x88) + 0x110 * Server);
+    if (!IsValidPtr(Addresses::ServerBaseAddress))
+    {
+        DebugLog("[ServerList] ServerBaseAddress is NULL in GetServerNameFromList");
+        return 0;
+    }
+
+    if (Server < 0 || Server >= ServerList::ServerCount)
+    {
+        DebugLog("[ServerList] Invalid server index in GetServerNameFromList");
+        return 0;
+    }
+
+    DWORD serverEntry = Addresses::ServerBaseAddress + (0x110 * Server);
+    DWORD nameAddress = serverEntry + 0x88;
+
+    __try
+    {
+        return *(DWORD*)nameAddress;
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        DebugLog("[ServerList] Failed reading server name pointer");
+        return 0;
+    }
 }
+
 int ServerList::GetServerCount()
 {
-	return ServerCount;
+    return ServerList::ServerCount;
 }
-void ServerList::WriteServerInformation(DWORD Server, const char* ServerName, const char* MapName, bool isInGame, int com_maxclients, int clients, int ping, int minping, int maxping, const char* gamemode)
-{	
-	//// Testing using Struct.
-	//Server_t* myServer = new Server_t();
-	////myServer->ServerName = strdup(ServerName);
-	////myServer->MapName = strdup(ServerName);
-	//myServer->Ping = ping;
-	//myServer->MaxPing = ping;
-	//myServer->MinPing = ping;
-	//return;
 
+void ServerList::WriteServerInformation(
+    DWORD Server,
+    const char* ServerName,
+    const char* MapName,
+    bool isInGame,
+    int com_maxclients,
+    int clients,
+    int ping,
+    int minping,
+    int maxping,
+    const char* gamemode)
+{
+    if (!IsValidPtr(Server))
+    {
+        DebugLog("[ServerList] WriteServerInformation got NULL server address");
+        return;
+    }
 
-	//Server Name
-	memcpy((void*)(Server + 0x88), ServerName, 0x15);
+    if (!ServerName)
+        ServerName = "Unknown Server";
 
-	//Mapname
-	memcpy((void*)(Server + 0xA8), MapName, 0x15);
+    if (!MapName)
+        MapName = IsZm() ? "tomb_zm" : "mp_nuketown_2020";
 
-	//isInGame
-	*(bool*)(Server + 0xF0) = isInGame;
+    if (!gamemode)
+        gamemode = IsZm() ? "ZMUI_ZCLASSIC" : "tdm";
 
-	//com_maxclients
-	*(DWORD*)(Server + 0x72) = com_maxclients;
+    __try
+    {
+        ZeroMemory((void*)(Server + 0x88), 0x15);
+        ZeroMemory((void*)(Server + 0xA8), 0x15);
+        ZeroMemory((void*)(Server + 0xE0), 0x15);
 
-	//Clients
-	*(DWORD*)(Server + 0x71) = clients;
+        memcpy((void*)(Server + 0x88), ServerName, min(strlen(ServerName), size_t(0x14)));
+        memcpy((void*)(Server + 0xA8), MapName, min(strlen(MapName), size_t(0x14)));
+        memcpy((void*)(Server + 0xE0), gamemode, min(strlen(gamemode), size_t(0x14)));
 
-	//minping
-	*((WORD*)Server + 0x3E) = minping;
+        *(bool*)(Server + 0xF0) = isInGame;
 
-	//maxping
-	*((WORD*)Server + 0x3F) = maxping;
+        *(BYTE*)(Server + 0x72) = (BYTE)com_maxclients;
+        *(BYTE*)(Server + 0x71) = (BYTE)clients;
 
-	//ping
-	*((WORD*)Server + 0x40) = ping;
-
-	//GameMode
-	memcpy((void*)(Server + 0xE0), gamemode, 0x15);
+        *(WORD*)(Server + 0x7C) = (WORD)minping;
+        *(WORD*)(Server + 0x7E) = (WORD)maxping;
+        *(WORD*)(Server + 0x80) = (WORD)ping;
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        DebugLog("[ServerList] WriteServerInformation crashed while writing memory");
+    }
 }
+
 void ServerList::AddServer()
 {
-	ServerList::ServerCount = 25;
-	if (Global::Game::Type == GameType::GAME_TYPE_ZM)
-	{
-		for (int i = 0; i < ServerCount; i++)
-			ServerList::WriteServerInformation(Addresses::ServerBaseAddress + (0x110 * i), hString::va("Test Server %i", i), "tomb_zm", (i == (i / 2) * 2 ? true : false), 18, 1, 80, 0, 140, "ZMUI_ZCLASSIC");
-	}
-	else
-	{
-		for (int i = 0; i < ServerCount; i++)
-			ServerList::WriteServerInformation(Addresses::ServerBaseAddress + (0x110 * i), hString::va("Test Server %i", i), "mp_nuketown_2020", (i == (i / 2) * 2 ? true : false), 18, 1, 80, 0, 140, "tdm");
-	}
+    if (!IsValidPtr(Addresses::ServerBaseAddress))
+    {
+        DebugLog("[ServerList] ServerBaseAddress is NULL in AddServer");
+        ServerList::ServerCount = 0;
+        return;
+    }
+
+    ServerList::ServerCount = 25;
+
+    for (int i = 0; i < ServerList::ServerCount; i++)
+    {
+        DWORD serverAddress = Addresses::ServerBaseAddress + (0x110 * i);
+
+        const char* mapName = IsZm() ? "tomb_zm" : "mp_nuketown_2020";
+        const char* gameMode = IsZm() ? "ZMUI_ZCLASSIC" : "tdm";
+
+        ServerList::WriteServerInformation(
+            serverAddress,
+            hString::va("Test Server %i", i),
+            mapName,
+            (i % 2) == 0,
+            18,
+            1,
+            80,
+            0,
+            140,
+            gameMode);
+    }
 }
+
 void ServerList::Initialize()
 {
-	// seems to work but still its not DvarFind :P
-	Addresses::Dvar_RegisterBool("ui_netSource", false, 0, "");
-	// for some reasons it dosent find my dvar
-	//FindDvar("ui_netSource");//return 0 ?!?!?!?
+    DebugLog("[ServerList] Initialize started");
 
+    ServerList::ServerCount = 0;
 
-	ServerList::GetServerNameFromListHook.Initialize(Addresses::GetServerNameFromList, ServerList::GetServerNameFromList);
-	ServerList::GetServerNameFromListHook.InstallHook();
+    if (Addresses::Dvar_RegisterBool)
+    {
+        __try
+        {
+            Addresses::Dvar_RegisterBool("ui_netSource", false, 0, "");
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            DebugLog("[ServerList] Dvar_RegisterBool crashed");
+        }
+    }
+    else
+    {
+        DebugLog("[ServerList] Dvar_RegisterBool is NULL");
+    }
 
-	ServerList::GetServerCountHook.Initialize(Addresses::GetServerCount, ServerList::GetServerCount);
-	ServerList::GetServerCountHook.InstallHook();
+    if (!IsValidPtr(Addresses::GetServerNameFromList))
+    {
+        DebugLog("[ServerList] GetServerNameFromList address is NULL, skipping hook");
+    }
+    else
+    {
+        __try
+        {
+            ServerList::GetServerNameFromListHook.Initialize(
+                Addresses::GetServerNameFromList,
+                ServerList::GetServerNameFromList);
 
-	// Lets add some Servers and set some assigne it.
-	ServerList::AddServer();
+            ServerList::GetServerNameFromListHook.InstallHook();
+
+            DebugLog("[ServerList] GetServerNameFromList hook installed");
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            DebugLog("[ServerList] GetServerNameFromList hook crashed");
+        }
+    }
+
+    if (!IsValidPtr(Addresses::GetServerCount))
+    {
+        DebugLog("[ServerList] GetServerCount address is NULL, skipping hook");
+    }
+    else
+    {
+        __try
+        {
+            ServerList::GetServerCountHook.Initialize(
+                Addresses::GetServerCount,
+                ServerList::GetServerCount);
+
+            ServerList::GetServerCountHook.InstallHook();
+
+            DebugLog("[ServerList] GetServerCount hook installed");
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER)
+        {
+            DebugLog("[ServerList] GetServerCount hook crashed");
+        }
+    }
+
+    ServerList::AddServer();
+
+    DebugLog("[ServerList] Initialize finished");
 }

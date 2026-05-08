@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wadifytool", "..\WADify\wadifytool.csproj", "{1648A3B2-35FF-4FA5-A493-998A2152439F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "T6M", "SteamApiBase\T6M.vcxproj", "{F781915A-5330-4202-B673-B27EEA19A0E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{1648A3B2-35FF-4FA5-A493-998A2152439F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1648A3B2-35FF-4FA5-A493-998A2152439F}.Release|Win32.ActiveCfg = Release|Any CPU
 		{1648A3B2-35FF-4FA5-A493-998A2152439F}.Release|Win32.Build.0 = Release|Any CPU
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Debug|Any CPU.Build.0 = Debug|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Debug|Win32.Build.0 = Debug|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Release|Any CPU.Build.0 = Release|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Release|Win32.ActiveCfg = Release|Win32
+		{F781915A-5330-4202-B673-B27EEA19A0E7}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

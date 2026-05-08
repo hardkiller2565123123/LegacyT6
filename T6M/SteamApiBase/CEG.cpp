@@ -5,9 +5,6 @@ int CegHandler::unkHandlerShit;
 char CegHandler::zone_file_mem2[16];
 void* CegHandler::zone_file_mem;
 
-
-
-
 Hook::Call CegHandler::cegMemcpyHook;
 DWORD CegHandler::cegMemcpyHookLoc;
 DWORD CegHandler::OldContextRecord = 0;
@@ -20,37 +17,44 @@ void CegHandler::sub_1002F5A0(PCONTEXT a1)
 	a1->Dr3 = 0;
 	a1->Dr7 &= 0xFFFFFFAA;
 }
+
 int CegHandler::sub_1002F5E0(DWORD* a1, char a2, char a3, int a4)
 {
 	*(DWORD*)a1 = (a4 << a2) | *(DWORD*)a1 & ~(((1 << a3) - 1) << a2);
 	return a4 << a2;
 }
+
 void CegHandler::sub_1002F620(PCONTEXT ContextRecord, DWORD OldContextRecord)
 {
-	int v2; // ecx@7
-	int v3; // eax@15
-	char v4; // [sp+Ch] [bp-114h]@1
-	int v5; // [sp+D0h] [bp-50h]@18
-	int v6; // [sp+DCh] [bp-44h]@18
-	int v7; // [sp+E8h] [bp-38h]@10
-	unsigned __int8 v8; // [sp+F7h] [bp-29h]@1
-	char v9; // [sp+103h] [bp-1Dh]@1
-	char v10; // [sp+10Fh] [bp-11h]@1
-	char v11; // [sp+11Bh] [bp-5h]@1
+	int v2;
+	int v3;
+	int v5;
+	int v6;
+	int v7;
+	unsigned __int8 v8;
+	char v9;
+	char v10;
+	char v11;
 
 	v11 = 0;
 	v10 = 0;
 	v9 = 0;
 	v8 = 0;
+
 	if (ContextRecord->Dr7 & 1)
 		v11 = 1;
+
 	if (ContextRecord->Dr7 & 4)
 		v10 = 1;
+
 	if (ContextRecord->Dr7 & 0x10)
 		v9 = 1;
+
 	v2 = ContextRecord->Dr7 & 0x40;
+
 	if (v2)
 		v8 = 1;
+
 	if (v11)
 	{
 		if (v10)
@@ -58,8 +62,10 @@ void CegHandler::sub_1002F620(PCONTEXT ContextRecord, DWORD OldContextRecord)
 			if (v9)
 			{
 				v3 = v8;
+
 				if (v8)
 					return;
+
 				ContextRecord->Dr3 = OldContextRecord;
 				v8 = 1;
 				v7 = 3;
@@ -84,7 +90,9 @@ void CegHandler::sub_1002F620(PCONTEXT ContextRecord, DWORD OldContextRecord)
 		v11 = 1;
 		v7 = 0;
 	}
+
 	ContextRecord->Dr6 = 0;
+
 	v6 = 0;
 	v5 = 0;
 
@@ -345,6 +353,8 @@ void __stdcall CegHandler::cegZoneLoc(int ZoneMemLoc)
 
 
 
+
+
 	zone_file_mem = *(void**)CegZoneFile;
 	*(DWORD*)zone_file_mem2 = *(DWORD*)(CegZoneFile + 4);
 	*(DWORD*)&zone_file_mem2[4] = *(DWORD*)(CegZoneFile + 8);
@@ -421,9 +431,9 @@ void CegHandler::Initialize()
 		{
 			Setup_V41CEG();
 		}
-		else if (Global::Game::Version == GameVersion::GAME_VERSION_41)
+		else if (Global::Game::Version == GameVersion::GAME_VERSION_44)
 		{
-			Setup_V43_ZM_CEG();
+			Setup_V41CEG();
 		}
 	}
 	else if (Global::Game::Type == GameType::GAME_TYPE_MP)
@@ -436,9 +446,16 @@ void CegHandler::Initialize()
 		{
 			Setup_V43CEG();
 		}
+		else if (Global::Game::Version == GameVersion::GAME_VERSION_44)
+		{
+			Setup_V43CEG();
+		}
 	}
+
 	CegHandler::Signatures();
 }
+
+
 void CegHandler::Setup_V39CEG()
 {
 	// Decryption calls.
@@ -934,12 +951,5 @@ void CegHandler::Signatures()
 
 
 
-	for (int i = 0; i < 22; i++)
-	{
-		signature_t* signature = &signatures[i];
-		if (signature->signature)
-		{
-			ProcessSignature2(i, signature);
-		}
-	}
+
 }
