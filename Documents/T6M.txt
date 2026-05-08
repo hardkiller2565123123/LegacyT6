@@ -2,48 +2,211 @@
 
 ## Overview
 
-T6M source cleanup focused on making the older matchmaking, profile, and Steam bridge code compile without missing backend systems.
+T6M received the majority of the repair and cleanup work during this rebuild process.
 
-The goal is not to fully restore online services yet. The goal is to make the source stable enough to build and continue development.
+Most of the effort focused on stabilizing:
+
+* matchmaking
+* profile systems
+* messaging
+* Steam bridge code
+* auth handling
+* xNP/PM integration
+* backend placeholder systems
+
+The goal was to make the source compile and run without the original backend libraries while keeping the project structure intact for future restoration.
 
 ---
 
 ## Current Build Direction
 
-T6M currently uses simple local placeholder systems for missing backend calls.
+The current T6M setup uses standalone local stub systems for missing networking and backend functionality.
 
-This avoids errors from missing libraries and missing networking exports while the source is being repaired.
+This avoids dependency problems caused by missing libraries and unresolved imports such as:
 
----
-
-## Work Completed
-
-### Removed Duplicate Code
-
-`bdProfile.cpp` had duplicate pasted code.
-
-This caused errors such as:
-
-```txt
-function already has a body
-redefinition errors
+```txt id="rj0m7o"
+libpm.lib
+__imp__NP_AuthenticateWithDetails
+__imp__NP_SendMessage
+__imp__NP_Connect
+__imp__NP_WriteUserFile
 ```
 
-The duplicate code was removed so every function only exists once.
+The current setup is intended to:
+
+* keep the project compiling
+* prevent crashes
+* keep systems callable
+* allow future backend restoration later
 
 ---
 
-### Fixed Profile Data Structure
+## Major Work Completed
 
-The profile code expects this field:
+### Removed Missing Backend Dependencies
 
-```cpp
+The source originally attempted to link against:
+
+```txt id="b3jow5"
+libpm.lib
+```
+
+That library was unavailable and caused linker failures.
+
+The dependency was removed from:
+
+* Visual Studio linker settings
+* `.vcxproj` dependency lists
+* old pragma comments
+
+---
+
+### Rebuilt xNP Stub Layer
+
+A large amount of work went into rebuilding the temporary xNP system.
+
+Temporary replacements were added for functions such as:
+
+```cpp id="34rm0g"
+xNP_Connect
+xNP_SendMessage
+xNP_WriteUserFile
+xNP_GetUserFile
+xNP_GetPublisherFile
+xNP_GetxNPID
+xNP_CreateSessionWithCredentials
+xNP_SetRichPresence
+xNP_StoreRichPresence
+```
+
+These now return safe placeholder values instead of crashing or generating unresolved externals.
+
+---
+
+### Fixed Authentication Conflicts
+
+The source repeatedly conflicted between:
+
+```cpp id="2lcw7n"
+NPAuthenticateResult
+xNPAuthenticateResult
+```
+
+and:
+
+```cpp id="y4n77k"
+NPAsync
+xNPAsync
+```
+
+The standalone build direction now consistently uses:
+
+```cpp id="s1nq2v"
+xNPAuthenticateResult
+xNPAsync<xNPAuthenticateResult>
+```
+
+inside the local stub system.
+
+This removed:
+
+* enum conflicts
+* template conflicts
+* redefinition errors
+* unresolved externals
+
+---
+
+### Simplified Auth Result Handling
+
+Original auth code depended on enums such as:
+
+```cpp id="zb9cl5"
+AuthenticateResultOK
+AuthenticateResultBadDetails
+AuthenticateResultAlreadyLoggedIn
+```
+
+These definitions conflicted with multiple headers and rebuild attempts.
+
+The temporary standalone auth system now simply uses:
+
+```cpp id="h7rf4m"
+0 = success
+```
+
+and checks:
+
+```cpp id="6f0yfc"
+if (result->result != 0)
+```
+
+This keeps the source compiling while the real backend is unavailable.
+
+---
+
+### Fixed PM_SendMessage Problems
+
+A major issue involved:
+
+```cpp id="t8jdyj"
+PM_SendMessage
+```
+
+The source originally:
+
+* included `.cpp` files directly
+* had duplicate bodies
+* had mismatched signatures
+* mixed C and C++ linkage
+
+The temporary solution now uses:
+
+* a normal header declaration
+* a simple placeholder implementation
+* a clean 3-argument function signature
+
+Example:
+
+```cpp id="zh9a5h"
+int __cdecl PM_SendMessage(
+    PMID onlineID,
+    uint8_t* message,
+    int messageLength
+)
+```
+
+The full PM/message bridge is still unfinished.
+
+---
+
+### Fixed bdProfile.cpp
+
+`bdProfile.cpp` accidentally contained duplicated pasted code.
+
+This caused:
+
+* duplicate definitions
+* multiple body errors
+* compile instability
+
+The duplicate implementation was removed.
+
+---
+
+### Fixed Profile Structures
+
+The project expected:
+
+```cpp id="cm3y9m"
 profiles->results[i].xNPID
 ```
 
-So the profile result entry structure keeps the member named:
+So the profile result structures were rebuilt to match the expected layout.
 
-```cpp
+Example:
+
+```cpp id="f4l8mh"
 struct PMGetPT5ProfileDataEntry
 {
     xNPID xNPID;
@@ -53,99 +216,77 @@ struct PMGetPT5ProfileDataEntry
 
 ---
 
-### Fixed Rich Presence Calls
+### Fixed Rich Presence Overloads
 
-Steam friends code calls rich presence like this:
+Steam friends/profile code required both versions of:
 
-```cpp
-xNP_GetFriendRichPresence(id, "currentGame")
-```
-
-A matching overload was added so the function accepts both:
-
-```cpp
+```cpp id="hz3pm8"
 xNP_GetFriendRichPresence(id)
 xNP_GetFriendRichPresence(id, key)
 ```
 
----
-
-### Simplified Auth Checks
-
-The auth check was changed to avoid missing enum names.
-
-Instead of depending on:
-
-```cpp
-AuthenticateResultOK
-```
-
-the standalone setup checks for:
-
-```cpp
-result->result != 0
-```
-
-`0` means success in the temporary stub system.
+Matching overloads were added so the project compiles correctly.
 
 ---
 
-### Matchmaking Placeholders
+### Stabilized Matchmaking Replies
 
-Some matchmaking functions currently send safe placeholder replies instead of using missing backend services.
+Several matchmaking functions originally depended on unfinished backend systems.
 
-Examples:
+Temporary placeholder replies were added to functions such as:
 
-```cpp
+```cpp id="lm22yq"
 inviteto_match_session
 submit_performance
 get_performance_values
 delete_match_session
 ```
 
-This helps prevent crashes while the backend is unfinished.
+This prevents crashes while backend systems remain unfinished.
 
 ---
 
 ## Known Issues
 
-### PM_SendMessage / Message Bridge
+### PM / Messaging Layer
 
-The PM/message system is still not fully repaired.
+The PM/message bridge still requires future cleanup.
 
-Related code may still need cleanup around:
+Areas still unfinished include:
 
-```cpp
+```cpp id="dz6c4u"
 PM_SendMessage
 xNP_SendMessage
 NP_SendMessage
 dw_messaging_send_global_im
 ```
 
-For now, this system is being left as a placeholder until the rest of the project builds properly.
+The current recommendation is:
 
-Recommended current action:
-
-* Leave the simple message stub in place
-* Do not connect it to missing real backend functions yet
-* Fix it later after the project compiles cleanly
+* leave placeholder stubs in place
+* avoid wiring into real networking yet
+* revisit after the project fully stabilizes
 
 ---
 
 ## Current Status
 
-T6M currently has:
+T6M currently:
 
-* Profile code mostly cleaned up
-* Matchmaking using placeholder replies
-* Steam rich presence compile issues reduced
-* Missing backend calls stubbed
-* PM/message bridge still unfinished
+* builds using standalone stubs
+* avoids missing libpm/libnp dependencies
+* has placeholder auth
+* has placeholder messaging
+* has placeholder matchmaking
+* has placeholder profile handling
+* has reduced Steam bridge conflicts
+* still has unfinished PM/message systems
 
 ---
 
 ## Notes for GitHub
 
-This source is currently in a rebuild/cleanup state.
+This source is currently in a rebuild/cleanup phase.
 
-The current version focuses on getting the project compiling without original private backend libraries. Some systems are placeholders and should be treated as unfinished.
+Many backend systems are temporarily stubbed because the original private libraries and services are unavailable. The current goal is source stabilization and compile recovery before restoring full backend functionality.
+
