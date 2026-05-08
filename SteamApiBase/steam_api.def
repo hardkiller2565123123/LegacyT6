@@ -1,0 +1,4 @@
+LIBRARY steam_api
+
+EXPORTS
+    PM_SendMessage
