@@ -1,73 +1,118 @@
 #include "STDInc.h"
+#include <mmsystem.h>
+
 #pragma comment(lib, "Winmm.lib")
 
 Hook::Stomp SetUnhandledExceptionFilter_Hook;
+
 void DumpHandler::Initialize()
 {
 	SetUnhandledExceptionFilter(&DumpHandler::CustomUnhandledExceptionFilter);
-
-	SetUnhandledExceptionFilter_Hook.Initialize((uintptr_t)SetUnhandledExceptionFilter, DumpHandler::SetUnhandledExceptionFilter_Stub);
-	SetUnhandledExceptionFilter_Hook.InstallHook();
-
-	Hook::IAT::WriteIATAddress("winmm.dll", "timeGetTime", (uint64_t)GetModuleHandle(NULL), DumpHandler::SafeTimeGetTime);
 }
-LPTOP_LEVEL_EXCEPTION_FILTER WINAPI DumpHandler::SetUnhandledExceptionFilter_Stub(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
+
+LPTOP_LEVEL_EXCEPTION_FILTER WINAPI DumpHandler::SetUnhandledExceptionFilter_Stub(
+	LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
 {
-	SetUnhandledExceptionFilter_Hook.ReleaseHook();
-	LPTOP_LEVEL_EXCEPTION_FILTER retVal = SetUnhandledExceptionFilter(&DumpHandler::CustomUnhandledExceptionFilter);
-	SetUnhandledExceptionFilter_Hook.InstallHook();
-	return retVal;
+	UNREFERENCED_PARAMETER(lpTopLevelExceptionFilter);
+
+	return SetUnhandledExceptionFilter(&DumpHandler::CustomUnhandledExceptionFilter);
 }
+
 LONG WINAPI DumpHandler::CustomUnhandledExceptionFilter(LPEXCEPTION_POINTERS ExceptionInfo)
 {
-	// Ignore breakpoints.
-	if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_BREAKPOINT) return EXCEPTION_CONTINUE_EXECUTION;
+	if (!ExceptionInfo || !ExceptionInfo->ExceptionRecord)
+		return EXCEPTION_CONTINUE_SEARCH;
 
+	DWORD exceptionCode = ExceptionInfo->ExceptionRecord->ExceptionCode;
 
-	// step 1: write minidump
-	char error[1024];
-	char filename[MAX_PATH];
-	__time64_t time;
-	tm* ltime;
+	if (exceptionCode == EXCEPTION_BREAKPOINT)
+		return EXCEPTION_CONTINUE_EXECUTION;
 
-	_time64(&time);
-	ltime = _localtime64(&time);
-	strftime(filename, sizeof(filename) - 1, "PlusOpsII - %H-%M-%S %d.%m.%Y.dmp", ltime);
-	_snprintf(error, sizeof(error) - 1, "A minidump has been written to %s.", filename);
+	if (exceptionCode == 0x80000004)
+		return EXCEPTION_CONTINUE_EXECUTION;
 
-	HANDLE hFile = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	char filename[MAX_PATH] = { 0 };
+	char error[1024] = { 0 };
+
+	__time64_t rawTime = 0;
+	tm* localTime = NULL;
+
+	_time64(&rawTime);
+	localTime = _localtime64(&rawTime);
+
+	if (localTime)
+	{
+		strftime(
+			filename,
+			sizeof(filename) - 1,
+			"PlusOpsII - %H-%M-%S %d.%m.%Y.dmp",
+			localTime);
+	}
+	else
+	{
+		strcpy_s(filename, sizeof(filename), "PlusOpsII.dmp");
+	}
+
+	_snprintf(
+		error,
+		sizeof(error) - 1,
+		"A minidump has been written to %s.",
+		filename);
+
+	HANDLE hFile = CreateFileA(
+		filename,
+		GENERIC_WRITE,
+		FILE_SHARE_WRITE,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
 
 	if (hFile != INVALID_HANDLE_VALUE)
 	{
 		MINIDUMP_EXCEPTION_INFORMATION ex = { 0 };
+
 		ex.ThreadId = GetCurrentThreadId();
 		ex.ExceptionPointers = ExceptionInfo;
 		ex.ClientPointers = FALSE;
 
-		MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ex, NULL, NULL);
+		MiniDumpWriteDump(
+			GetCurrentProcess(),
+			GetCurrentProcessId(),
+			hFile,
+			MiniDumpNormal,
+			&ex,
+			NULL,
+			NULL);
 
 		CloseHandle(hFile);
 	}
 	else
 	{
-		_snprintf(error, sizeof(error) - 1, "An error (0x%x) occurred during creating %s.", GetLastError(), filename);
+		_snprintf(
+			error,
+			sizeof(error) - 1,
+			"An error (0x%x) occurred while creating %s.",
+			GetLastError(),
+			filename);
 	}
 
-	// step 2: exit the application
-	// why was this removed?
-	if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)
-	{
-		MessageBox(0, "Termination because of a stack overflow.", "ERROR", MB_ICONERROR);
-	}
-	else
-	{
-		MessageBox(0, hString::va("Fatal error (0x%08x) at 0x%08x.\n%s", ExceptionInfo->ExceptionRecord->ExceptionCode, ExceptionInfo->ExceptionRecord->ExceptionAddress, error), "ERROR", MB_ICONERROR);
-	}
+	MessageBoxA(
+		0,
+		hString::va(
+			"Fatal error (0x%08x) at 0x%08x.\n%s",
+			exceptionCode,
+			ExceptionInfo->ExceptionRecord->ExceptionAddress,
+			error),
+		"ERROR",
+		MB_ICONERROR);
 
-	TerminateProcess(GetCurrentProcess(), ExceptionInfo->ExceptionRecord->ExceptionCode);
-	return 0;
+	TerminateProcess(GetCurrentProcess(), exceptionCode);
+
+	return EXCEPTION_EXECUTE_HANDLER;
 }
+
 DWORD WINAPI DumpHandler::SafeTimeGetTime()
 {
-	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - Global::Variables::StartupPoint).count();
+	return timeGetTime();
 }

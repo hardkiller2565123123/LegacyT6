@@ -5,7 +5,9 @@ void Patch()
 {
 	switch (*(DWORD*)0x41136F)
 	{
+		// ============================================
 		// Version 39 - Zombies
+		// ============================================
 	case 0x75C08500:
 	{
 		Global::Game::Version = GAME_VERSION_39;
@@ -13,7 +15,9 @@ void Patch()
 		break;
 	}
 
+	// ============================================
 	// Version 40 - Multiplayer
+	// ============================================
 	case 0x111F9C35:
 	{
 		Global::Game::Version = GAME_VERSION_40;
@@ -21,7 +25,9 @@ void Patch()
 		break;
 	}
 
+	// ============================================
 	// Version 41 - Zombies
+	// ============================================
 	case 0x244C8BCC:
 	{
 		Global::Game::Version = GAME_VERSION_41;
@@ -29,7 +35,9 @@ void Patch()
 		break;
 	}
 
+	// ============================================
 	// Version 43 - Multiplayer
+	// ============================================
 	case 0x30C4835E:
 	{
 		Global::Game::Version = GAME_VERSION_43;
@@ -37,7 +45,9 @@ void Patch()
 		break;
 	}
 
+	// ============================================
 	// Version 44 - Multiplayer
+	// ============================================
 	case 0x1AE85508:
 	{
 		Global::Game::Version = GAME_VERSION_44;
@@ -45,7 +55,9 @@ void Patch()
 		break;
 	}
 
+	// ============================================
 	// Version 44 - Zombies
+	// ============================================
 	case 0x5E8B3046:
 	{
 		Global::Game::Version = GAME_VERSION_44;
@@ -53,7 +65,9 @@ void Patch()
 		break;
 	}
 
-	// Dedicated - debug version
+	// ============================================
+	// Dedicated Debug
+	// ============================================
 	case 0x0F0C7D8B:
 	{
 		Global::Game::Version = GAME_VERSION_DEDI_DEBUG;
@@ -61,6 +75,9 @@ void Patch()
 		break;
 	}
 
+	// ============================================
+	// Unknown Version
+	// ============================================
 	default:
 	{
 		char buffer[128];
@@ -82,26 +99,30 @@ void Patch()
 	}
 	}
 
+	// ============================================
+	// Base Initialization
+	// ============================================
+
 	Addresses::Assign();
 
 	/*
-		V44 safe startup.
+		V44 SAFE STARTUP
 
-		Overlay is the next thing to test.
-		DumpHandler, CEG, ServerList, and Server stay disabled for V44
-		until each one is tested by itself.
+		Only safe systems enabled right now.
+
+		Disabled:
+		- CEG
+		- ServerList
+		- DW Server
+		- Old V43/V41 byte patches
+		- Old hooks
 	*/
 
-	SteamCommon::LoadOverlay();
 
-	if (Global::Game::Version != GAME_VERSION_44)
-	{
-		DumpHandler::Initialize();
-		CegHandler::Initialize();
 
-		ServerList::Initialize();
-		Server::Initialize();
-	}
+	// ============================================
+	// Zombies
+	// ============================================
 
 	if (Global::Game::Type == GAME_TYPE_ZM)
 	{
@@ -117,18 +138,22 @@ void Patch()
 		}
 		else if (Global::Game::Version == GAME_VERSION_44)
 		{
-			OutputDebugStringA("[Patch] V44 ZM safe boot\n");
+			OutputDebugStringA("[Patch] V44 ZM SAFE BOOT\n");
 
 			/*
-				Temporary shared V44 safe boot.
+				Temporary shared V44 startup.
 
-				Do not call old V41 ZM patches yet.
-				They may contain wrong offsets for this executable.
+				Do NOT use old V41 zombie offsets yet.
 			*/
 
 			T6MP::PatchT6MP_V44();
 		}
 	}
+
+	// ============================================
+	// Multiplayer
+	// ============================================
+
 	else if (Global::Game::Type == GAME_TYPE_MP)
 	{
 		Global::Variables::Steam_AppID = 202990;
@@ -143,11 +168,27 @@ void Patch()
 		}
 		else if (Global::Game::Version == GAME_VERSION_44)
 		{
-			OutputDebugStringA("[Patch] V44 MP safe boot\n");
+			OutputDebugStringA("[Patch] V44 MP SAFE BOOT\n");
+
+			/*
+				V44 currently runs in safe mode only.
+
+				No:
+				- byte patches
+				- hooks
+				- command registration
+				- CEG
+				- server hooks
+			*/
 
 			T6MP::PatchT6MP_V44();
 		}
 	}
+
+	// ============================================
+	// Invalid
+	// ============================================
+
 	else
 	{
 		Auth_Error("Game version not supported. Aborting startup");

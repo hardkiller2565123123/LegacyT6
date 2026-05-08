@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Addresses.cpp" />
     <ClCompile Include="Auth.cpp" />
+    <ClCompile Include="BadFunctions.cpp" />
     <ClCompile Include="bdProfile.cpp" />
     <ClCompile Include="BitBuffer.cpp" />
     <ClCompile Include="ByteBuffer.cpp" />

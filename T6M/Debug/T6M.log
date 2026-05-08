@@ -1,7 +1,9 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(364,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
 C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (..\Debug\) contains files shared from another project (SteamApiBase.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Patch.cpp
+  PatchT6MP.cpp
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(88): warning C4309: 'argument' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(89): warning C4309: 'argument' : truncation of constant value
   T6M.vcxproj -> C:\Users\dylan\Downloads\SourceCode\T6M Source\T6M\SteamApiBase\..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.dll
