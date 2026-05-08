@@ -180,20 +180,7 @@ void T6MP::PatchT6MP_V43()
 
 void T6MP::PatchT6MP_V44()
 {
-	OutputDebugStringA("[T6MP] PatchT6MP_V44 safe startup\n");
-
-	/*
-		V44 safe mode.
-
-		Do not use V43 command registration yet.
-		Your dump crashed at 0x005B3078, which is inside
-		Cmd_AddCommandInternal.
-
-		Do not install asset/script hooks yet.
-		Do not write old V43 byte patches yet.
-
-		Get the game showing first, then enable things one by one.
-	*/
+	OutputDebugStringA("[T6MP] V44 SAFE BOOT\n");
 
 	CreateThread(0, 0, ConsoleWindow, (LPVOID)0x473AD0, 0, 0);
 }

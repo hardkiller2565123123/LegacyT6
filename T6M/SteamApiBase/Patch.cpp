@@ -83,17 +83,24 @@ void Patch()
 	}
 
 	Addresses::Assign();
+
+	/*
+		V44 safe startup.
+
+		Overlay is the next thing to test.
+		DumpHandler, CEG, ServerList, and Server stay disabled for V44
+		until each one is tested by itself.
+	*/
+
 	SteamCommon::LoadOverlay();
-	DumpHandler::Initialize();
 
-	// Keep these disabled until the Version 44 offsets are stable.
-	//ServerList::Initialize();
-	//Server::Initialize();
-
-	// CEG can crash/hang on wrong offsets. Leave off for V44 safe boot.
 	if (Global::Game::Version != GAME_VERSION_44)
 	{
+		DumpHandler::Initialize();
 		CegHandler::Initialize();
+
+		ServerList::Initialize();
+		Server::Initialize();
 	}
 
 	if (Global::Game::Type == GAME_TYPE_ZM)
@@ -110,8 +117,16 @@ void Patch()
 		}
 		else if (Global::Game::Version == GAME_VERSION_44)
 		{
-			// Safe boot: do not reuse V41 patches yet.
-			OutputDebugStringA("[Patch] V44 ZM safe boot: skipping old ZM patches\n");
+			OutputDebugStringA("[Patch] V44 ZM safe boot\n");
+
+			/*
+				Temporary shared V44 safe boot.
+
+				Do not call old V41 ZM patches yet.
+				They may contain wrong offsets for this executable.
+			*/
+
+			T6MP::PatchT6MP_V44();
 		}
 	}
 	else if (Global::Game::Type == GAME_TYPE_MP)
@@ -128,6 +143,8 @@ void Patch()
 		}
 		else if (Global::Game::Version == GAME_VERSION_44)
 		{
+			OutputDebugStringA("[Patch] V44 MP safe boot\n");
+
 			T6MP::PatchT6MP_V44();
 		}
 	}
