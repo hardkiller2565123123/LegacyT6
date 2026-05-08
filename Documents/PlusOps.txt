@@ -1,0 +1,143 @@
+# PlusOps Source Documentation
+
+## Overview
+
+PlusOps is currently being cleaned up so the source can build without missing private libraries or broken legacy networking code.
+
+This documentation covers the current repair work and what still needs attention.
+
+## Current Build Direction
+
+The project is using a standalone stub setup for now.
+
+That means some original online/backend systems are replaced with simple local placeholder functions so the project can compile and continue development without requiring missing libraries such as:
+
+- libpm.lib
+- missing NP backend exports
+- missing PM backend exports
+
+This is not meant to be the final online system. It is only a temporary compile-safe layer.
+
+## Work Completed
+
+### Removed Missing libpm.lib Dependency
+
+The project was trying to link against:
+
+```txt
+libpm.lib
+```
+
+That library was missing, which caused linker errors.
+
+The dependency was removed from the Visual Studio project file under:
+
+```txt
+Linker -> Input -> Additional Dependencies
+```
+
+### Cleaned PM_SendMessage Setup
+
+The project previously included a `.cpp` file directly inside a header:
+
+```cpp
+#include "PM_SendMessage.cpp"
+```
+
+That caused duplicate function body errors.
+
+The correct setup is:
+
+```cpp
+#include "PM_SendMessage.h"
+```
+
+The `.cpp` file should be compiled normally by the project.
+
+### Added xNP Stub Layer
+
+A simple xNP stub layer was added to replace missing backend calls while the project is being rebuilt.
+
+Examples of stubbed functions:
+
+```cpp
+xNP_Connect
+xNP_SendMessage
+xNP_WriteUserFile
+xNP_GetxNPID
+xNP_CreateSessionWithCredentials
+```
+
+These return safe placeholder values so the source can keep building.
+
+### Fixed Auth Conflicts
+
+The source was mixing real and fake auth types:
+
+```cpp
+NPAuthenticateResult
+xNPAuthenticateResult
+```
+
+For the standalone build, the source should consistently use:
+
+```cpp
+xNPAuthenticateResult
+```
+
+The real `NPAuthenticateResult` should only be used later if the full real NP library/backend is restored.
+
+### Fixed Auth Enum Conflicts
+
+The source had duplicate definitions of values like:
+
+```cpp
+AuthenticateResultOK
+AuthenticateResultBadDetails
+AuthenticateResultUnknown
+```
+
+The standalone stub setup should avoid redefining those names and should use raw result values such as:
+
+```cpp
+0 = success
+```
+
+## Known Issues
+
+### PM_SendMessage / Message Bridge
+
+The message bridge is still not fully finished.
+
+The source may still produce errors around:
+
+```cpp
+PM_SendMessage
+xNP_SendMessage
+NP_SendMessage
+```
+
+For now, this part is being left alone until the rest of the source is stable.
+
+Recommended current action:
+
+- Keep the simple placeholder function.
+- Do not wire it to real NP/PM networking yet.
+- Revisit it after the project builds cleanly.
+
+## Current Status
+
+PlusOps currently has:
+
+- Missing `libpm.lib` removed
+- Local placeholder auth
+- Local placeholder messaging
+- Local placeholder profile file handling
+- Cleaner build direction
+- Message bridge still unfinished
+
+## Notes for GitHub
+
+This source is currently in cleanup/rebuild state.
+
+Some networking and online systems are stubbed because original backend libraries are not included. These files are kept simple so the project can be compiled and improved step by step.
