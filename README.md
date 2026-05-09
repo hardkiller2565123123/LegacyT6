@@ -6,7 +6,7 @@
 
 ### *Preserving a piece of Black Ops II client history*
 
-![Progress](https://img.shields.io/badge/Restoration-42%25-orange?style=for-the-badge)
+![Progress](https://img.shields.io/badge/Restoration-55%25-orange?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Windows-blue?style=for-the-badge)
 ![Architecture](https://img.shields.io/badge/Build-x86-red?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Current-Main_Menu_Launching-success?style=for-the-badge)
