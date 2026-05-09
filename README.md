@@ -1,165 +1,184 @@
-# BO2 Client Source Restoration
+# T6M Source Restoration
 
-## Credits
+<div align="center">
 
-Original source code, research, and tooling belong to their respective original developers and communities.
+# 🎮 T6M Restoration Project
 
-This repository exists for preservation, restoration, compatibility repair, and historical research purposes only.
+### *Preserving a piece of Black Ops II client history*
 
-Special credit to:
+![Progress](https://img.shields.io/badge/Restoration-42%25-orange?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Windows-blue?style=for-the-badge)
+![Architecture](https://img.shields.io/badge/Build-x86-red?style=for-the-badge)
+![Status](https://img.shields.io/badge/Current-Main_Menu_Launching-success?style=for-the-badge)
 
-- T6M developers
-- FourDeltaOne developers
-- Original BO2 reverse engineering community
-- Legacy multiplayer preservation contributors
-- Community researchers who documented DemonWare, Steam, and BO2 internals
+</div>
 
 ---
 
-# T6M Restoration Status
+# 📖 About
 
-### Overall Restoration Progress
+This repository focuses on the restoration, preservation, and compatibility repair of the legacy **T6M Black Ops II client source code**.
 
-```txt
-[███████████████████░░░░░░░░░░░░░░░░░░░░░] 42%
+The goal is to preserve historical BO2 client development while restoring buildability and improving compatibility on modern Windows systems.
+
+This project is intended strictly for:
+
+* Software preservation
+* Reverse engineering research
+* Educational purposes
+* Offline experimentation
+* Historical restoration work
+
+---
+
+# 🛠 Current Restoration Progress
+
+## Overall Progress
+
+```text
+█████████████████░░░░░░░░░░░░░░░░░ 42%
 ```
 
-### Core Systems
+---
 
-| Component                     | Status |
-|------------------------------|--------|
-| Project Structure            | Restored |
-| VS2013 Solution Loading      | Restored |
-| x86 Build Environment        | Restored |
-| Main Menu Launch             | Working |
-| Basic Steam Stub             | Partial |
-| Dependency Cleanup           | In Progress |
-| Legacy SDK Compatibility     | In Progress |
-| DemonWare Emulation          | Not Started |
-| Matchmaking                  | Offline |
-| Server Browser               | Offline |
-| Party System                 | Offline |
-| Authentication               | Offline |
-| Crash Stabilization          | In Progress |
-| PM_SendMessage Repair        | In Progress |
+# ⚙ Core Systems Status
+
+| System              | Status          | Notes                             |
+| ------------------- | --------------- | --------------------------------- |
+| Project Structure   | ✅ Restored      | Original structure mostly rebuilt |
+| VS2013 Solution     | ✅ Working       | Opens and compiles correctly      |
+| x86 Environment     | ✅ Working       | Legacy toolchain restored         |
+| Main Menu Launch    | ✅ Working       | Successfully reaches BO2 menus    |
+| Steam Stub          | ⚠ Partial       | Basic interfaces implemented      |
+| Dependency Cleanup  | ⚠ In Progress   | Some legacy libraries missing     |
+| Legacy SDK Support  | ⚠ In Progress   | Requires old SDK setup            |
+| DemonWare Emulation | ❌ Not Started   | No backend implementation yet     |
+| Matchmaking         | ❌ Offline       | Disabled                          |
+| Party System        | ❌ Offline       | Not functional                    |
+| Server Browser      | ❌ Offline       | Not functional                    |
+| Authentication      | ❌ Offline       | Placeholder only                  |
+| Crash Stabilization | ⚠ In Progress   | Active debugging                  |
+| PM_SendMessage      | ⚠ Investigating | Suspected crash source            |
 
 ---
 
-# Current State
+# 🧩 Current State
 
-The current T6M restoration successfully:
+### Working
 
-- Builds under legacy Visual Studio environments
-- Launches into the BO2 multiplayer main menu
-- Loads major engine modules
-- Restores portions of legacy Steam interfaces
-- Repairs several broken project references and dependencies
+* Launches into multiplayer main menu
+* Loads core engine modules
+* Restores portions of original Steam interfaces
+* Several linker/compiler issues repaired
+* Legacy project structure preserved
 
-The project is **not yet fully playable online**.
+### Missing / Incomplete
 
-Major networking systems such as DemonWare emulation, matchmaking, and party handling are still incomplete or stubbed.
+* DemonWare backend
+* Matchmaking systems
+* Party handling
+* Full Steam emulation
+* Network authentication
+* Server browser support
 
 ---
 
-# Known Issues
+# 🐞 Current Crash Investigation
 
-## Current Crash
-
-Recent dump analysis shows:
-
-- `0xC0000005` Access Violation
-- Null execution at:
+Recent dump analysis indicates:
 
 ```cpp
-0x00000000
+Exception Code: 0xC0000005
+Access Violation Executing Location: 0x00000000
 ```
 
-This indicates a missing or unresolved function pointer during runtime execution.
+This typically indicates:
+
+* Null function pointer execution
+* Missing virtual function initialization
+* Unresolved hook targets
+* Incomplete networking callbacks
+* Invalid Steam export bindings
 
 ### Suspected Areas
 
-- `PM_SendMessage`
-- Uninitialized networking callbacks
-- Missing DemonWare handlers
-- Invalid Steam interface exports
-- Incomplete hook initialization
-- Null virtual function calls
+* `PM_SendMessage`
+* Networking callbacks
+* DemonWare handlers
+* Steam interface hooks
+* Uninitialized game pointers
 
 ---
 
-# Restoration Goals
+# 🧱 Build Requirements
 
-- Restore original build compatibility
-- Preserve original project structure
-- Repair broken linker/compiler issues
-- Restore missing Steam exports
-- Improve runtime stability
-- Repair legacy networking systems
-- Implement safer initialization checks
-- Rebuild missing DemonWare systems
-- Document offsets, hooks, and crash causes
-- Preserve historical BO2 client development
+## Recommended Setup
+
+| Requirement   | Version       |
+| ------------- | ------------- |
+| Visual Studio | 2013 Update 5 |
+| Platform      | x86           |
+| Windows SDK   | 8.1           |
+| DirectX SDK   | June 2010     |
 
 ---
 
-# Build Requirements
+# 📦 Required Notes
 
-## Recommended Environment
+These projects were originally developed around:
 
-- Visual Studio 2013 Update 5
-- Windows SDK 8.1
-- DirectX SDK (June 2010)
-- x86 Configuration
-
-### Archive Link
-
-https://archive.org/details/en_visual_studio_community_2013_with_update_5_x86_dvd_6816332
-
----
-
-# Important Notes
-
-These projects were originally designed around:
-
-- Older MSVC compiler behavior
-- Legacy Windows SDKs
-- Deprecated Steam APIs
-- Older dependency chains
-- Pre-modern C++ standards
+* Older MSVC compiler behavior
+* Legacy Steam APIs
+* Deprecated Windows SDKs
+* Pre-modern C++ standards
+* Older dependency chains
 
 Modern Visual Studio versions may require:
 
-- Retargeting toolsets
-- Manual include/lib configuration
-- Disabled warning promotion
-- Legacy runtime installation
+* Toolset retargeting
+* Manual include/lib setup
+* Legacy runtime installation
+* Disabled warning promotion
 
-Avoid fully modernizing the codebase unless necessary for stability.
-
----
-
-# Repository Purpose
-
-This repository focuses on:
-
-- Software preservation
-- Historical research
-- Reverse engineering education
-- Offline experimentation
-- Restoration of abandoned source code
-
-This is **not** a commercial project.
+Avoid fully modernizing the project unless necessary.
 
 ---
 
-# Disclaimer
+# 🔗 Visual Studio 2013 Download
 
-This repository is intended strictly for:
+## Official Archive
 
-- Archival purposes
-- Educational research
-- Offline testing
-- Software restoration
+[https://archive.org/details/en_visual_studio_community_2013_with_update_5_x86_dvd_6816332](https://archive.org/details/en_visual_studio_community_2013_with_update_5_x86_dvd_6816332)
+
+---
+
+# 🙏 Credits
+
+Original source code and projects belong to their respective developers and communities.
+
+Special credit to:
+
+* T6M developers
+* FourDeltaOne developers
+* Original BO2 reverse engineering communities
+* Multiplayer preservation contributors
+* Community researchers documenting BO2 internals
+
+---
+
+# ⚠ Disclaimer
+
+This repository does **NOT** include:
+
+* Game assets
+* Commercial BO2 files
+* Proprietary Activision content
+* Copyrighted binaries
+
+Users are responsible for owning legitimate copies of all required software.
+
+This repository exists solely for archival, educational, and restoration purposes.
+
 
 No copyrighted game assets, proprietary binaries, or commercial content are included.
 
