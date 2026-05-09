@@ -833,21 +833,21 @@ void Addresses::Assign()
 			Addresses::ColorTableByte = 0x00;
 
 			// Ingame console hooks disabled
-			Addresses::ConsoleCatcher = 0x00;
-			Addresses::ConsoleCatcher2 = 0x00;
+			Addresses::ConsoleCatcher = 0x5D0A40;
+			Addresses::ConsoleCatcher2 = 0x5D0A46;
 			Addresses::RendererFrame = 0x00;
 			Addresses::RendererFrameO = 0x00;
-			Addresses::RendererStart = 0x00;
-			Addresses::RendererStartO = 0x00;
+			Addresses::RendererStart = 0x5990E2;
+			Addresses::RendererStartO = 0x632110;
 			Addresses::RendererWidth = 0x00;
 			Addresses::RendererHeight = 0x00;
 			Addresses::InputUIToCL = 0x00;
 			Addresses::InputExecBinding = 0x00;
 			Addresses::InputExecBindingO = 0x00;
-			Addresses::InputCharEvent = 0x00;
-			Addresses::InputCharEventO = 0x00;
-			Addresses::InputKeyEvent = 0x00;
-			Addresses::InputKeyEventO = 0x00;
+			Addresses::InputCharEvent = 0x68B960;
+			Addresses::InputCharEventO = 0x68B965;
+			Addresses::InputKeyEvent = 0x5D0980;
+			Addresses::InputKeyEventO = 0x5D0985;
 			Addresses::InputMouseX = 0x00;
 			Addresses::InputMouseY = 0x00;
 			Addresses::InputHWND = 0x00;
@@ -857,14 +857,14 @@ void Addresses::Assign()
 			Addresses::GetServerCount = 0x00;
 			Addresses::ServerBaseAddress = 0x00;
 
-			// DW network patching disabled
-			Addresses::custom_gethostbyname = 0x00;
-			Addresses::dw_recvfrom = 0x00;
-			Addresses::dw_sendto = 0x00;
-			Addresses::dw_recv = 0x00;
-			Addresses::dw_send = 0x00;
-			Addresses::dw_connect = 0x00;
-			Addresses::dw_select = 0x00;
+			// DW Server - V44 IDA import addresses
+			Addresses::custom_gethostbyname = 0x00B7056C;
+			Addresses::dw_recvfrom = 0x00B7051C;
+			Addresses::dw_sendto = 0x00B70524;
+			Addresses::dw_recv = 0x00B7053C;
+			Addresses::dw_send = 0x00B70560;
+			Addresses::dw_connect = 0x00B7052C;
+			Addresses::dw_select = 0x00B70520;
 
 			// Branding/window style hooks disabled
 			Addresses::UI_BuildNumber = 0x00;
@@ -878,6 +878,17 @@ void Addresses::Assign()
 			Addresses::MissingDLC = 0x00;
 			Addresses::CheckFlag = 0x00;
 			Addresses::DLCAppID = 0x00;
+
+			// Offline / LAN menu string references only
+			// Not functions. Do not call these directly.
+			#define V44_MENU_OFFLINE_STRING        0x00BFF3D8 // MENU_OFFLINE
+			#define V44_MENU_SYSTEMLINK_LOBBY      0x00BD15E8 // menu_systemlink_lobby
+			#define V44_MENU_SYSTEMLINK_STRING2    0x00C2C1C8 // menu_systemlink...
+			#define V44_SYSTEMLINK_STRING          0x00C2E428 // systemlink
+			#define V44_ONLINEGAME_STRING          0x00C5F25C // onlinegame
+			#define V44_OFFLINEHOST_STRING         0x00C0BD9C // offlinehost
+			#define V44_XBLIVE_LOGGEDIN_STRING     0x00C27B20 // xblive_loggedin
+			#define V44_XBLIVE_PRIVATEMATCH_STRING 0x00C0EB30 // xblive_privatematch
 
 			break;
 		}

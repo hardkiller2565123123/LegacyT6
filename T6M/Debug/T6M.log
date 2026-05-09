@@ -4,6 +4,6 @@ C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.target
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(16): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
-c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(88): warning C4309: 'argument' : truncation of constant value
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(89): warning C4309: 'argument' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(90): warning C4309: 'argument' : truncation of constant value
   T6M.vcxproj -> C:\Users\dylan\Downloads\SourceCode\T6M Source\T6M\SteamApiBase\..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.dll
