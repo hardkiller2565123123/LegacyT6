@@ -24,6 +24,7 @@
     <ClCompile Include="ColoredName.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Crypto.cpp" />
+    <ClCompile Include="DebugConsole.cpp" />
     <ClCompile Include="DLC.cpp" />
     <ClCompile Include="DumpHandler.cpp" />
     <ClCompile Include="CEG.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="ColoredName.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Crypto.h" />
+    <ClInclude Include="DebugConsole.h" />
     <ClInclude Include="DLC.h" />
     <ClInclude Include="DumpHandler.h" />
     <ClInclude Include="CEG.h" />
@@ -425,6 +427,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

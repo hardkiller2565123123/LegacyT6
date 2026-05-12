@@ -1,5 +1,6 @@
 #include "STDInc.h"
 #include <mmsystem.h>
+#include "DebugConsole.h"
 
 #pragma comment(lib, "Winmm.lib")
 
@@ -106,6 +107,14 @@ LONG WINAPI DumpHandler::CustomUnhandledExceptionFilter(LPEXCEPTION_POINTERS Exc
 			error),
 		"ERROR",
 		MB_ICONERROR);
+
+	DebugConsole::Error(
+		"Crash",
+		"Fatal error 0x%08X at 0x%08X",
+		exceptionCode,
+		ExceptionInfo->ExceptionRecord->ExceptionAddress);
+
+	DebugConsole::CopyLogToClipboard();
 
 	TerminateProcess(GetCurrentProcess(), exceptionCode);
 

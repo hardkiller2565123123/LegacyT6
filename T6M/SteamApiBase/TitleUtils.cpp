@@ -1,18 +1,23 @@
 #include "STDInc.h"
+
 void TitleUtils::dw_tutils_get_server_time(bdByteBuffer& data)
 {
 	dwMessage reply(1, false);
+
 	reply.byteBuffer.writeUInt64(0x8000000000000001);
 	reply.byteBuffer.writeUInt32(0);
 	reply.byteBuffer.writeByte(6);
 	reply.byteBuffer.writeUInt32(1);
 	reply.byteBuffer.writeUInt32(1);
 	reply.byteBuffer.writeUInt32(time(NULL));
+
 	reply.send(true);
 }
+
 void TitleUtils::dw_dml_get_user_data(bdByteBuffer& data)
 {
 	dwMessage reply(1, false);
+
 	reply.byteBuffer.writeUInt64(0x8000000000000001);
 	reply.byteBuffer.writeUInt32(0);
 	reply.byteBuffer.writeByte(8);
@@ -28,18 +33,34 @@ void TitleUtils::dw_dml_get_user_data(bdByteBuffer& data)
 
 	reply.send(true);
 }
+
 void TitleUtils::dw_messaging_send_global_im(bdByteBuffer& data)
 {
-	xNPID onlineID;
-	char* msg; int msglen;
+	PMID onlineID = 0;
+	char* msg = NULL;
+	int msglen = 0;
+
 	data.readBlob(&msg, &msglen);
 	data.readUInt64(&onlineID);
-	xNP_SendMessage(onlineID, (uint8_t*)msg, msglen);
-	Log::Debug("dwtitleutils", "sent instant message to %llx", onlineID);
+
+	printf(
+		"[DW TITLEUTILS] blocked global IM to=%llx len=%d\n",
+		onlineID,
+		msglen);
+
+	Log::Debug(
+		"dwtitleutils",
+		"blocked instant message to %llx",
+		onlineID);
 }
-void TitleUtils::dw_handle_tutils_message(int type, const char* buf, int len)
+
+void TitleUtils::dw_handle_tutils_message(
+	int type,
+	const char* buf,
+	int len)
 {
 	bdByteBuffer data((char*)buf, len);
+
 	char subtype = 0;
 	data.readByte(&subtype);
 
@@ -51,8 +72,12 @@ void TitleUtils::dw_handle_tutils_message(int type, const char* buf, int len)
 		case 6:
 			TitleUtils::dw_tutils_get_server_time(data);
 			break;
+
 		default:
-			Log::Debug("dwtitleutils", "call %i", subtype);
+			Log::Debug(
+				"dwtitleutils",
+				"call %i",
+				subtype);
 			break;
 		}
 	}

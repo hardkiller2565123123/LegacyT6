@@ -1,16 +1,16 @@
+#include "STDInc.h"
 #include "PM_SendMessage.h"
-#include <Windows.h>
 
-extern "C" __declspec(dllexport) int __cdecl PM_SendMessage(
+int __cdecl PM_SendMessage(
 	PMID onlineID,
 	uint8_t* message,
-	int messageLength
-)
+	int messageLength)
 {
-	OutputDebugStringA("[steam_api.dll] PM_SendMessage called\n");
+	UNREFERENCED_PARAMETER(onlineID);
+	UNREFERENCED_PARAMETER(message);
+	UNREFERENCED_PARAMETER(messageLength);
 
-	return xNP_SendMessage(
-		onlineID,
-		message,
-		messageLength);
+	OutputDebugStringA("[steam_api.dll] PM_SendMessage stub called\n");
+
+	return 1;
 }

@@ -266,15 +266,45 @@ void dw_Handler::dw_handle_message(const char* buf, int len)
 			DWPrint("[DW HANDLE] dispatch -> Profile");
 			bdProfile::HandleMessage(ptype, buf, len);
 		}
-		else
+		else if (ptype == 8)
 		{
-			printf("[DW HANDLE] unknown encrypted ptype=%i\n", ptype);
-
-			std::ofstream fp;
-			fp.open(hString::va("encrypted %d", ptype), std::ios::out | std::ios::binary);
-			fp.write((char*)buf, len);
+			DWPrint("[DW HANDLE] dispatch -> Profile");
+			bdProfile::HandleMessage(ptype, buf, len);
 		}
+		else if (ptype == 81)
+		{
+			printf("[DW HANDLE] faking success for ptype 81\n");
 
+			dwMessage reply(1, true);
+
+			reply.byteBuffer.writeUInt64(0x8000000000000001);
+			reply.byteBuffer.writeUInt32(700);
+			reply.byteBuffer.writeUInt32(0);
+			reply.byteBuffer.writeUInt32(0);
+
+			reply.send(true);
+		}
+		else if (ptype == 68)
+		{
+			printf("[DW HANDLE] faking success for ptype 68\n");
+
+			dwMessage reply(1, true);
+
+			reply.byteBuffer.writeUInt64(0x8000000000000001);
+			reply.byteBuffer.writeUInt32(700);
+			reply.byteBuffer.writeUInt32(0);
+			reply.byteBuffer.writeUInt32(0);
+
+			reply.send(true);
+		}
+		else if (ptype == 23 || ptype == 28)
+		{
+			printf(
+				"[DW HANDLE] isolating online service ptype=%i\n",
+				ptype);
+
+			dw_Handler::queuedPacketHere = true;
+		}
 		if (!dw_Handler::queuedPacketHere)
 		{
 			DWPrint("[DW HANDLE] sending generic encrypted ACK");

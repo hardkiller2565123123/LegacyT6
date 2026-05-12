@@ -1,9 +1,12 @@
 #include "STDInc.h"
 #include "../../../PlusOpsSource/PlusOpsSource/SteamApiBase/CEG.h"
+#include "DebugConsole.h"
 
 static void DebugLine(const char* text)
 {
-	if (!text) return;
+	if (!text)
+		return;
+
 	OutputDebugStringA(text);
 	OutputDebugStringA("\n");
 }
@@ -12,8 +15,7 @@ static bool SafeWriteByte(DWORD address, BYTE value, const char* name)
 {
 	if (!address)
 	{
-		DebugLine(name);
-		DebugLine("address is NULL");
+		printf("%s address is NULL\n", name ? name : "SafeWriteByte");
 		return false;
 	}
 
@@ -23,8 +25,7 @@ static bool SafeWriteByte(DWORD address, BYTE value, const char* name)
 
 		if (!VirtualProtect((void*)address, 1, PAGE_EXECUTE_READWRITE, &oldProtect))
 		{
-			DebugLine(name);
-			DebugLine("VirtualProtect failed");
+			printf("%s VirtualProtect failed\n", name ? name : "SafeWriteByte");
 			return false;
 		}
 
@@ -33,28 +34,68 @@ static bool SafeWriteByte(DWORD address, BYTE value, const char* name)
 		DWORD temp = 0;
 		VirtualProtect((void*)address, 1, oldProtect, &temp);
 
+		printf("%s write OK -> 0x%08X\n", name ? name : "SafeWriteByte", address);
 		return true;
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		DebugLine(name);
-		DebugLine("write crashed");
+		printf("%s write crashed -> 0x%08X\n", name ? name : "SafeWriteByte", address);
 		return false;
 	}
 }
 
-static void SafeAddCommand(const char* name, void(__cdecl* function)(), cmd_function_s* command)
+static bool SafeWriteDWORD(DWORD address, DWORD value, const char* name)
+{
+	if (!address)
+	{
+		printf("%s address is NULL\n", name ? name : "SafeWriteDWORD");
+		return false;
+	}
+
+	__try
+	{
+		DWORD oldProtect = 0;
+
+		if (!VirtualProtect((void*)address, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &oldProtect))
+		{
+			printf("%s VirtualProtect failed\n", name ? name : "SafeWriteDWORD");
+			return false;
+		}
+
+		*(DWORD*)address = value;
+
+		DWORD temp = 0;
+		VirtualProtect((void*)address, sizeof(DWORD), oldProtect, &temp);
+
+		printf("%s write OK -> 0x%08X\n", name ? name : "SafeWriteDWORD", address);
+		return true;
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		printf("%s write crashed -> 0x%08X\n", name ? name : "SafeWriteDWORD", address);
+		return false;
+	}
+}
+
+static void SafeAddCommand(
+	const char* name,
+	void(__cdecl* function)(),
+	cmd_function_s* command)
 {
 	if (!Addresses::Cmd_AddCommandInternal || !name || !function || !command)
+	{
+		printf("[T6MP] SafeAddCommand skipped: %s\n", name ? name : "NULL");
 		return;
+	}
 
 	__try
 	{
 		Addresses::Cmd_AddCommandInternal(name, function, command);
+		printf("[T6MP] command registered: %s\n", name);
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		DebugLine("[T6MP] Cmd_AddCommandInternal crashed");
+		printf("[T6MP] Cmd_AddCommandInternal crashed: %s\n", name);
 	}
 }
 
@@ -72,8 +113,95 @@ static void SafeStartConsoleThread(LPVOID startupAddress)
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		DebugLine("[T6MP] Console thread crashed");
+		printf("[T6MP] Console thread crashed\n");
 	}
+}
+
+static void SafeCbufAddText(const char* text)
+{
+	if (!Addresses::Cbuf_AddText || !text)
+	{
+		printf("[V44] Cbuf_AddText missing\n");
+		return;
+	}
+
+	__try
+	{
+		printf("[V44] Cbuf_AddText: %s\n", text);
+		Addresses::Cbuf_AddText(0, text);
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		printf("[V44] Cbuf_AddText crashed: %s\n", text);
+	}
+}
+
+typedef void(__cdecl* SessionModeFunc_t)();
+
+static void SafeCallSessionMode(DWORD address, const char* name)
+{
+	if (!address)
+	{
+		printf("[V44] %s address is NULL\n", name ? name : "SessionMode");
+		return;
+	}
+
+	__try
+	{
+		printf("[V44] calling %s at 0x%08X\n", name ? name : "SessionMode", address);
+
+		SessionModeFunc_t fn = (SessionModeFunc_t)address;
+		fn();
+
+		printf("[V44] %s finished\n", name ? name : "SessionMode");
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		printf("[V44] %s crashed\n", name ? name : "SessionMode");
+	}
+}
+
+void forceOnlineGame_f()
+{
+	SafeCallSessionMode(0x00971260, "SessionModeSetOnlineGame");
+}
+
+void forceSystemLink_f()
+{
+	SafeCallSessionMode(0x009712A0, "SessionModeSetSystemLink");
+}
+
+void forceOfflineMode_f()
+{
+	SafeCallSessionMode(0x009712E0, "SessionModeSetOffline");
+}
+
+void forcePrivateMode_f()
+{
+	SafeCallSessionMode(0x00971320, "SessionModeSetPrivate");
+}
+
+void forceOffline_f()
+{
+	printf("[V44] forcing offline / LAN menu state\n");
+
+	SafeCbufAddText("set onlinegame 0\n");
+	SafeCbufAddText("set systemlink 1\n");
+	SafeCbufAddText("set ui_netSource 1\n");
+	SafeCbufAddText("set xblive_privatematch 1\n");
+	SafeCbufAddText("set xblive_loggedin 0\n");
+	SafeCbufAddText("disconnect\n");
+	SafeCbufAddText("openmenu menu_systemlink_lobby\n");
+}
+
+void openConsole_f()
+{
+	printf("[V44] forcing console dvars + toggleconsole\n");
+
+	SafeCbufAddText("set developer 1\n");
+	SafeCbufAddText("set monkeytoy 0\n");
+	SafeCbufAddText("set con_minicon 1\n");
+	SafeCbufAddText("toggleconsole\n");
 }
 
 void spawnTestElem(int client)
@@ -205,118 +333,112 @@ void T6MP::PatchT6MP_V43()
 	MainPatchFunctions::LoadCustomWeaponAsset.InstallHook();
 }
 
-static bool SafeWriteDWORD(DWORD address, DWORD value, const char* name)
+
+static DWORD WINAPI V44CommandThread(LPVOID)
 {
-	if (!address)
-	{
-		printf("%s address is NULL\n", name);
-		OutputDebugStringA("SafeWriteDWORD address is NULL\n");
-		return false;
-	}
+	printf("[V44] command input ready\n");
+	printf("[V44] commands: help, openConsole, forceOffline, quit\n");
 
-	__try
-	{
-		DWORD oldProtect = 0;
+	char input[256] = { 0 };
 
-		if (!VirtualProtect((void*)address, sizeof(DWORD), PAGE_EXECUTE_READWRITE, &oldProtect))
+	while (true)
+	{
+		printf("> ");
+		fflush(stdout);
+
+		if (!fgets(input, sizeof(input), stdin))
 		{
-			printf("%s VirtualProtect failed\n", name);
-			return false;
+			Sleep(100);
+			continue;
 		}
 
-		*(DWORD*)address = value;
+		input[strcspn(input, "\r\n")] = 0;
 
-		DWORD temp = 0;
-		VirtualProtect((void*)address, sizeof(DWORD), oldProtect, &temp);
+		if (_stricmp(input, "help") == 0)
+		{
+			printf("Commands:\n");
+			printf("  help\n");
+			printf("  openConsole\n");
+			printf("  forceOffline\n");
+			printf("  quit\n");
+		}
+		else if (_stricmp(input, "openConsole") == 0)
+		{
+			openConsole_f();
+		}
+		else if (_stricmp(input, "forceOffline") == 0)
+		{
+			forceOffline_f();
+		}
+		else if (_stricmp(input, "quit") == 0)
+		{
+			printf("[V44] closing command thread\n");
+			break;
+		}
+		else if (input[0])
+		{
+			printf("[V44] unknown command: %s\n", input);
+		}
 
-		printf("%s write OK -> 0x%08X\n", name, address);
-		return true;
+		memset(input, 0, sizeof(input));
+		Sleep(10);
 	}
-	__except (EXCEPTION_EXECUTE_HANDLER)
-	{
-		printf("%s write crashed -> 0x%08X\n", name, address);
-		return false;
-	}
+
+	return 0;
 }
 
-static void SafeCbufAddText(const char* text)
-{
-	if (!Addresses::Cbuf_AddText || !text)
-	{
-		printf("[V44] Cbuf_AddText missing\n");
-		return;
-	}
 
-	__try
-	{
-		printf("[V44] Cbuf_AddText: %s\n", text);
-		Addresses::Cbuf_AddText(0, text);
-	}
-	__except (EXCEPTION_EXECUTE_HANDLER)
-	{
-		printf("[V44] Cbuf_AddText crashed: %s\n", text);
-	}
-}
 
-void forceOffline_f()
-{
-	printf("[V44] forcing offline / LAN menu state\n");
 
-	SafeCbufAddText("set onlinegame 0\n");
-	SafeCbufAddText("set systemlink 1\n");
-	SafeCbufAddText("set ui_netSource 1\n");
-	SafeCbufAddText("set xblive_privatematch 1\n");
-	SafeCbufAddText("set xblive_loggedin 0\n");
-	SafeCbufAddText("disconnect\n");
-	SafeCbufAddText("openmenu menu_systemlink_lobby\n");
-}
-
-void openConsole_f()
-{
-	printf("[V44] forcing console dvars + toggleconsole\n");
-
-	SafeCbufAddText("set developer 1\n");
-	SafeCbufAddText("set monkeytoy 0\n");
-	SafeCbufAddText("set con_minicon 1\n");
-	SafeCbufAddText("toggleconsole\n");
-}
 
 void T6MP::PatchT6MP_V44()
 {
+	// Initialize console first
 	AllocConsole();
-	freopen("CONOUT$", "w", stdout);
-	freopen("CONOUT$", "w", stderr);
+
+	FILE* dummy = NULL;
+	freopen_s(&dummy, "CONOUT$", "w", stdout);
+	freopen_s(&dummy, "CONOUT$", "w", stderr);
+	freopen_s(&dummy, "CONIN$", "r", stdin);
+
+	SetConsoleTitleA("T6M V44 Safe Console");
 
 	printf("[T6MP] V44 debug console initialized\n");
+	printf("[T6MP] V44 SAFE BOOT ONLY\n");
 
-	DebugLine("[T6MP] V44 SAFE BOOT ONLY");
-
-	static cmd_function_s testHudElems_cmd;
-	static cmd_function_s Notify_cmd;
-	static cmd_function_s autoChangeClass_cmd;
-	static cmd_function_s spawnBot_cmd;
-	static cmd_function_s forceOffline_cmd;
-	static cmd_function_s openConsole_cmd;
-
-	SafeAddCommand("testHudElems", testHudElems_f2, &testHudElems_cmd);
-	SafeAddCommand("Notify", PopupNotify::Notify_f, &Notify_cmd);
-	SafeAddCommand("autoChangeClass", Bots::autoChangeClass_f, &autoChangeClass_cmd);
-	SafeAddCommand("spawnBot", Bots::spawnBot_f, &spawnBot_cmd);
-	SafeAddCommand("forceOffline", forceOffline_f, &forceOffline_cmd);
-	SafeAddCommand("openConsole", openConsole_f, &openConsole_cmd);
-
-	SafeStartConsoleThread((LPVOID)0x473AD0);
-
-	SafeWriteDWORD(Addresses::dw_select, (DWORD)dw_Entry::dw_select, "[V44] dw_select");
-	SafeWriteDWORD(Addresses::dw_recv, (DWORD)dw_Entry::dw_recv, "[V44] dw_recv");
-	SafeWriteDWORD(Addresses::dw_send, (DWORD)dw_Entry::dw_send, "[V44] dw_send");
-	SafeWriteDWORD(Addresses::dw_connect, (DWORD)dw_Entry::dw_connect, "[V44] dw_connect");
-	SafeWriteDWORD(Addresses::dw_recvfrom, (DWORD)dw_Entry::dw_recvfrom, "[V44] dw_recvfrom");
-	SafeWriteDWORD(Addresses::dw_sendto, (DWORD)dw_Entry::dw_sendto, "[V44] dw_sendto");
-	SafeWriteDWORD(Addresses::custom_gethostbyname, (DWORD)dw_Entry::custom_gethostbyname, "[V44] custom_gethostbyname");
-
+	// Safe systems
 	SteamCommon::LoadOverlay();
 	DumpHandler::Initialize();
+
+	// Optional clean logger
+	//DebugConsole::Initialize();
+
+	// SERVER STUFF broken on V44 right now
+	//ServerList::Initialize();
+	//Server::Initialize();
+
+	// DW hooks disabled while testing safe boot
+	//SafeWriteDWORD(Addresses::dw_select, (DWORD)dw_Entry::dw_select, "[V44] dw_select");
+	//SafeWriteDWORD(Addresses::dw_recv, (DWORD)dw_Entry::dw_recv, "[V44] dw_recv");
+	//SafeWriteDWORD(Addresses::dw_send, (DWORD)dw_Entry::dw_send, "[V44] dw_send");
+	//SafeWriteDWORD(Addresses::dw_connect, (DWORD)dw_Entry::dw_connect, "[V44] dw_connect");
+	//SafeWriteDWORD(Addresses::dw_recvfrom, (DWORD)dw_Entry::dw_recvfrom, "[V44] dw_recvfrom");
+	//SafeWriteDWORD(Addresses::dw_sendto, (DWORD)dw_Entry::dw_sendto, "[V44] dw_sendto");
+	//SafeWriteDWORD(Addresses::custom_gethostbyname, (DWORD)dw_Entry::custom_gethostbyname, "[V44] custom_gethostbyname");
+
+	// Game command registration crashes on V44 right now
+	//static cmd_function_s testHudElems_cmd; SafeAddCommand("testHudElems", testHudElems_f2, &testHudElems_cmd);
+	//static cmd_function_s Notify_cmd; SafeAddCommand("Notify", PopupNotify::Notify_f, &Notify_cmd);
+	//static cmd_function_s autoChangeClass_cmd; SafeAddCommand("autoChangeClass", Bots::autoChangeClass_f, &autoChangeClass_cmd);
+	//static cmd_function_s spawnBot_cmd; SafeAddCommand("spawnBot", Bots::spawnBot_f, &spawnBot_cmd);
+	//static cmd_function_s forceOffline_cmd; SafeAddCommand("forceOffline", forceOffline_f, &forceOffline_cmd);
+	//static cmd_function_s openConsole_cmd; SafeAddCommand("openConsole", openConsole_f, &openConsole_cmd);
+
+	// Session mode commands caused script stack overflow
+	//static cmd_function_s forceOnlineGame_cmd; SafeAddCommand("forceOnlineGame", forceOnlineGame_f, &forceOnlineGame_cmd);
+	//static cmd_function_s forceSystemLink_cmd; SafeAddCommand("forceSystemLink", forceSystemLink_f, &forceSystemLink_cmd);
+	//static cmd_function_s forceOfflineMode_cmd; SafeAddCommand("forceOfflineMode", forceOfflineMode_f, &forceOfflineMode_cmd);
+	//static cmd_function_s forcePrivateMode_cmd; SafeAddCommand("forcePrivateMode", forcePrivateMode_f, &forcePrivateMode_cmd);
 
 	printf("[V44] testing InGameConsole::Initialize\n");
 
@@ -330,10 +452,17 @@ void T6MP::PatchT6MP_V44()
 		printf("[V44] InGameConsole crashed\n");
 	}
 
-	ServerList::Initialize();
-	Server::Initialize();
+	HANDLE commandThread = CreateThread(
+		NULL,
+		0,
+		V44CommandThread,
+		NULL,
+		0,
+		NULL);
 
-	printf("[T6MP] V44 stable online/DW hook layer installed\n");
-	printf("[T6MP] Type forceOffline in console to test LAN/offline menu\n");
-	printf("[T6MP] Type openConsole to test toggleconsole\n");
+	if (commandThread)
+		CloseHandle(commandThread);
+
+	printf("[T6MP] V44 safe boot complete\n");
+	printf("[T6MP] Type help in this console\n");
 }

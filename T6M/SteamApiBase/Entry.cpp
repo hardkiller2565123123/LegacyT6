@@ -44,28 +44,25 @@ static bool IsDemonwareHost(const char* name)
 	if (!name)
 		return false;
 
+	// ONLY redirect auth/lobby
+	// DO NOT redirect STUN servers
 	return
 		_stricmp(name, "ops2-pc-auth.prod.demonware.net") == 0 ||
-		_stricmp(name, "ops2-pc-lobby.prod.demonware.net") == 0 ||
-		_stricmp(name, "cod7-stun.us.demonware.net") == 0 ||
-		_stricmp(name, "cod7-stun.eu.demonware.net") == 0 ||
-		_stricmp(name, "cod7-stun.jp.demonware.net") == 0 ||
-		_stricmp(name, "cod7-stun.au.demonware.net") == 0;
+		_stricmp(name, "ops2-pc-lobby.prod.demonware.net") == 0;
 }
 
 hostent* WINAPI dw_Entry::custom_gethostbyname(const char* name)
 {
 	printf("[DW] gethostbyname: %s\n", name ? name : "NULL");
-	Log::Debug("custom_gethostbyname", name ? name : "NULL");
 
 	if (IsDemonwareHost(name))
 	{
-		DWPrint("[DW] redirecting Demonware host to localhost");
-		Log::Debug("custom_gethostbyname", "redirecting Demonware host to localhost");
+		DWPrint("[DW] redirecting auth/lobby server to localhost");
 
 		return gethostbyname(LOCAL_MASTER_IP);
 	}
 
+	// Let STUN + everything else resolve normally
 	return gethostbyname(name);
 }
 
@@ -79,10 +76,11 @@ static ULONG GetLocalMasterAddress()
 	return addr;
 }
 
-int WINAPI dw_Entry::dw_connect(SOCKET socket, const sockaddr* name, int namelen)
+int WINAPI dw_Entry::dw_connect(
+	SOCKET socket,
+	const sockaddr* name,
+	int namelen)
 {
-	DWPrint("[DW] connect called");
-
 	if (!masterAddr)
 		masterAddr = GetLocalMasterAddress();
 
@@ -95,12 +93,13 @@ int WINAPI dw_Entry::dw_connect(SOCKET socket, const sockaddr* name, int namelen
 			inet_ntoa(addr->sin_addr),
 			ntohs(addr->sin_port));
 
-		if (addr->sin_addr.S_un.S_addr == masterAddr && addr->sin_port == htons(3074))
+		// capture localhost auth/lobby socket
+		if (addr->sin_addr.S_un.S_addr == masterAddr)
 		{
 			DWPrint("[DW] captured DW socket");
-			Log::Debug("dw_connect", "captured DW socket");
 
 			dw_Entry::dwSocket = socket;
+
 			return 0;
 		}
 	}
@@ -108,31 +107,49 @@ int WINAPI dw_Entry::dw_connect(SOCKET socket, const sockaddr* name, int namelen
 	return connect(socket, name, namelen);
 }
 
-int WINAPI dw_Entry::dw_send(SOCKET socket, const char* buf, int len, int flags)
+int WINAPI dw_Entry::dw_send(
+	SOCKET socket,
+	const char* buf,
+	int len,
+	int flags)
 {
 	if (socket == dw_Entry::dwSocket)
 	{
 		printf("[DW] send intercepted len=%d\n", len);
+
 		dw_Handler::dw_handle_packet(buf, len);
+
 		return len;
 	}
 
 	return send(socket, buf, len, flags);
 }
 
-int WINAPI dw_Entry::dw_sendto(SOCKET socket, const char* buf, int len, int flags, const sockaddr* to, int tolen)
+int WINAPI dw_Entry::dw_sendto(
+	SOCKET socket,
+	const char* buf,
+	int len,
+	int flags,
+	const sockaddr* to,
+	int tolen)
 {
 	if (socket == dw_Entry::dwSocket)
 	{
 		printf("[DW] sendto intercepted len=%d\n", len);
+
 		dw_Handler::dw_handle_packet(buf, len);
+
 		return len;
 	}
 
 	return sendto(socket, buf, len, flags, to, tolen);
 }
 
-int WINAPI dw_Entry::dw_recv(SOCKET socket, char* buf, int len, int flags)
+int WINAPI dw_Entry::dw_recv(
+	SOCKET socket,
+	char* buf,
+	int len,
+	int flags)
 {
 	if (socket != dw_Entry::dwSocket)
 		return recv(socket, buf, len, flags);
@@ -140,15 +157,24 @@ int WINAPI dw_Entry::dw_recv(SOCKET socket, char* buf, int len, int flags)
 	if (dw_Handler::dw_packet_available())
 	{
 		int result = dw_Handler::dw_dequeue_packet(buf, len);
+
 		printf("[DW] recv dequeued len=%d\n", result);
+
 		return result;
 	}
 
 	WSASetLastError(WSAEWOULDBLOCK);
+
 	return SOCKET_ERROR;
 }
 
-int WINAPI dw_Entry::dw_recvfrom(SOCKET socket, char* buf, int len, int flags, sockaddr* from, int* fromlen)
+int WINAPI dw_Entry::dw_recvfrom(
+	SOCKET socket,
+	char* buf,
+	int len,
+	int flags,
+	sockaddr* from,
+	int* fromlen)
 {
 	if (socket != dw_Entry::dwSocket)
 		return recvfrom(socket, buf, len, flags, from, fromlen);
@@ -156,11 +182,14 @@ int WINAPI dw_Entry::dw_recvfrom(SOCKET socket, char* buf, int len, int flags, s
 	if (dw_Handler::dw_packet_available())
 	{
 		int result = dw_Handler::dw_dequeue_packet(buf, len);
+
 		printf("[DW] recvfrom dequeued len=%d\n", result);
+
 		return result;
 	}
 
 	WSASetLastError(WSAEWOULDBLOCK);
+
 	return SOCKET_ERROR;
 }
 
@@ -173,7 +202,6 @@ int WINAPI dw_Entry::dw_select(
 {
 	bool hadDWSocketWrite = false;
 	bool hadDWSocketRead = false;
-	bool hadDWSocketExcept = false;
 
 	if (dw_Entry::dwSocket != INVALID_SOCKET)
 	{
@@ -188,15 +216,14 @@ int WINAPI dw_Entry::dw_select(
 			hadDWSocketRead = true;
 			FD_CLR(dw_Entry::dwSocket, readfds);
 		}
-
-		if (exceptfds && FD_ISSET(dw_Entry::dwSocket, exceptfds))
-		{
-			hadDWSocketExcept = true;
-			FD_CLR(dw_Entry::dwSocket, exceptfds);
-		}
 	}
 
-	int retval = select(nfds, readfds, writefds, exceptfds, timeout);
+	int retval = select(
+		nfds,
+		readfds,
+		writefds,
+		exceptfds,
+		timeout);
 
 	if (retval == SOCKET_ERROR)
 		retval = 0;
@@ -209,7 +236,9 @@ int WINAPI dw_Entry::dw_select(
 			retval++;
 		}
 
-		if (hadDWSocketRead && readfds && dw_Handler::dw_packet_available())
+		if (hadDWSocketRead &&
+			readfds &&
+			dw_Handler::dw_packet_available())
 		{
 			FD_SET(dw_Entry::dwSocket, readfds);
 			retval++;
