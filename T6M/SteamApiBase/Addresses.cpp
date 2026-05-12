@@ -859,13 +859,9 @@ void Addresses::Assign()
 		Addresses::CheckFlag = 0x00;
 		Addresses::DLCAppID = 0x00;
 
-		// ZM V42 / Zombies V44 Lua engine callbacks
-		#define ZM42_SESSION_ONLINEGAME   0x0096DDB0
-		#define ZM42_SESSION_SYSTEMLINK   0x0096DDF0
-		#define ZM42_SESSION_OFFLINE      0x0096DE30
-		#define ZM42_SESSION_PRIVATE      0x0096DE70
-		#define ZM42_SESSION_RESETMODES   0x0096DEB0
-		#define ZM42_LUA_REGISTER_ENGINE  0x0097E900
+	
+
+
 
 		break;
 

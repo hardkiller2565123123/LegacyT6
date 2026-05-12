@@ -1,18 +1,13 @@
 #include "STDInc.h"
 
-// ==========================================================
-// ZM Safe Helpers
-// ==========================================================
-
-static void ZMPrint(const char* text)
-{
-	if (!text)
-		return;
-
-	printf("%s\n", text);
-	OutputDebugStringA(text);
-	OutputDebugStringA("\n");
-}
+#define ZM42_DVAR_DEVELOPER_SCRIPT      0x025389F0
+#define ZM42_DVAR_LUI_CHECKSUM_ENABLED  0x025B8FB8
+#define ZM42_DVAR_XBLIVE_RANKEDMATCH    0x025B8DB0
+#define ZM42_DVAR_DEVELOPER_SCRIPT      0x025389D0
+#define ZM42_DVAR_LUI_CHECKSUM_ENABLED  0x025B9BF8
+#define ZM42_DVAR_XBLIVE_RANKEDMATCH    0x025B8BD8
+#define ZM42_DVAR_ONLINEGAME            0x025389F4
+#define ZM42_DVAR_XBLIVE_PRIVATEMATCH   0x02538A44
 
 static bool ZMSafeWriteBytes(DWORD address, const BYTE* data, SIZE_T size, const char* name)
 {
@@ -28,12 +23,7 @@ static bool ZMSafeWriteBytes(DWORD address, const BYTE* data, SIZE_T size, const
 
 		if (!VirtualProtect((LPVOID)address, size, PAGE_EXECUTE_READWRITE, &oldProtect))
 		{
-			printf(
-				"%s VirtualProtect failed at 0x%08X err=%lu\n",
-				name ? name : "ZMSafeWriteBytes",
-				address,
-				GetLastError());
-
+			printf("%s VirtualProtect failed at 0x%08X err=%lu\n", name ? name : "ZMSafeWriteBytes", address, GetLastError());
 			return false;
 		}
 
@@ -43,22 +33,12 @@ static bool ZMSafeWriteBytes(DWORD address, const BYTE* data, SIZE_T size, const
 		DWORD temp = 0;
 		VirtualProtect((LPVOID)address, size, oldProtect, &temp);
 
-		printf(
-			"%s write OK -> 0x%08X size=%u\n",
-			name ? name : "ZMSafeWriteBytes",
-			address,
-			(unsigned int)size);
-
+		printf("%s write OK -> 0x%08X size=%u\n", name ? name : "ZMSafeWriteBytes", address, (unsigned int)size);
 		return true;
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		printf(
-			"%s write crashed -> 0x%08X size=%u\n",
-			name ? name : "ZMSafeWriteBytes",
-			address,
-			(unsigned int)size);
-
+		printf("%s write crashed -> 0x%08X size=%u\n", name ? name : "ZMSafeWriteBytes", address, (unsigned int)size);
 		return false;
 	}
 }
@@ -68,32 +48,89 @@ static bool ZMSafeWriteByte(DWORD address, BYTE value, const char* name)
 	return ZMSafeWriteBytes(address, &value, 1, name);
 }
 
-static bool ZMSafeWriteDWORD(DWORD address, DWORD value, const char* name)
+static bool ZMSafeReadDWORD(DWORD address, DWORD* out)
 {
-	return ZMSafeWriteBytes(address, (const BYTE*)&value, sizeof(value), name);
+	if (!address || !out)
+		return false;
+
+	__try
+	{
+		*out = *(DWORD*)address;
+		return true;
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		*out = 0;
+		return false;
+	}
 }
 
-static bool ZMSafePatchJumpShort(DWORD address, const char* name)
+static bool ZMSafeSetDvarBoolByPointer(DWORD pointerAddress, bool enabled, const char* name)
 {
-	BYTE patch = 0xEB;
-	return ZMSafeWriteByte(address, patch, name);
+	DWORD dvar = 0;
+
+	if (!ZMSafeReadDWORD(pointerAddress, &dvar) || !dvar)
+	{
+		printf("[ZM V42] %s dvar pointer is NULL\n", name);
+		return false;
+	}
+
+	BYTE value = enabled ? 1 : 0;
+
+	ZMSafeWriteByte(dvar + 0x18, value, name);
+	ZMSafeWriteByte(dvar + 0x1C, value, name);
+
+	printf("[ZM V42] %s set -> ptr 0x%08X dvar 0x%08X value %d\n", name, pointerAddress, dvar, value);
+	return true;
 }
 
-static bool ZMSafeNop(DWORD address, SIZE_T size, const char* name)
+static void ForceZombieSystemLinkOnce()
 {
-	BYTE buffer[32] = { 0 };
+	printf("[ZM V42] applying frontend dvar flags\n");
 
-	if (size > sizeof(buffer))
-		size = sizeof(buffer);
+	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_DEVELOPER_SCRIPT, true, "[ZM V42] developer_script");
+	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_LUI_CHECKSUM_ENABLED, false, "[ZM V42] lui_checksum_enabled");
+	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_RANKEDMATCH, false, "[ZM V42] xblive_rankedmatch");
+	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_ONLINEGAME, false, "[ZM V42] onlinegame");
+	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_PRIVATEMATCH, true, "[ZM V42] xblive_privatematch");
 
-	memset(buffer, 0x90, size);
-	return ZMSafeWriteBytes(address, buffer, size, name);
+	printf("[ZM V42] frontend dvar pass finished\n");
 }
 
-static void ZMSafeAddCommand(
-	const char* name,
-	void(__cdecl* function)(),
-	cmd_function_s* command)
+static DWORD WINAPI ZMFrontendWaitThread(LPVOID)
+{
+	printf("[ZM V42] waiting for frontend dvars...\n");
+
+	for (int i = 0; i < 600; i++)
+	{
+		DWORD dev = 0;
+		DWORD lui = 0;
+		DWORD ranked = 0;
+
+		ZMSafeReadDWORD(ZM42_DVAR_DEVELOPER_SCRIPT, &dev);
+		ZMSafeReadDWORD(ZM42_DVAR_LUI_CHECKSUM_ENABLED, &lui);
+		ZMSafeReadDWORD(ZM42_DVAR_XBLIVE_RANKEDMATCH, &ranked);
+
+		if (dev || lui || ranked)
+		{
+			printf("[ZM V42] frontend dvars found dev=0x%08X lui=0x%08X ranked=0x%08X\n", dev, lui, ranked);
+			break;
+		}
+
+		Sleep(100);
+	}
+
+	for (int i = 0; i < 60; i++)
+	{
+		ForceZombieSystemLinkOnce();
+		Sleep(500);
+	}
+
+	printf("[ZM V42] frontend dvar forcing finished\n");
+	return 0;
+}
+
+static void ZMSafeAddCommand(const char* name, void(__cdecl* function)(), cmd_function_s* command)
 {
 	if (!Addresses::Cmd_AddCommandInternal || !name || !function || !command)
 	{
@@ -131,38 +168,6 @@ static void ZMSafeStartConsoleThread(LPVOID startupAddress)
 		printf("[T6ZM] Console thread crashed\n");
 	}
 }
-
-// ==========================================================
-// V42 / Zombies V44 Local/Systemlink Bootstrap
-// ==========================================================
-
-static void ForceZombieSystemLink()
-{
-	printf("[ZM V42] forcing systemlink/frontend flags\n");
-	printf("[ZM V42] This Is For Testing Does Not Work\n");
-
-	// NOTE:
-	// These are currently test candidates. If any of these crash or break boot,
-	// comment them one-by-one. Do not patch 0x004D5CF3 anymore.
-
-	//ZMSafeWriteByte(0x0088B16F, 0x01, "[ZM V42] developer_script");
-	//ZMSafeWriteByte(0x0088AF0F, 0x00, "[ZM V42] lui_checksum_enabled");
-	//ZMSafeWriteByte(0x0088B0C7, 0x01, "[ZM V42] xblive_rankedmatch");
-
-	// Old V41 systemlink visible candidate.
-	// In your V42 IDA this address landed in code before, so keep it disabled.
-	// ZMSafeWriteByte(0x0088B157, 0x01, "[ZM V42] systemlink visible");
-
-	// Old V41 steam restart bypass candidate.
-	// Keep disabled until confirmed in V42 IDA.
-	// ZMSafeWriteByte(0x0052E240, 0xC3, "[ZM V42] no Steam restart");
-
-	printf("[ZM V42] systemlink/frontend flag pass finished\n");
-}
-
-// ==========================================================
-// Optional V42 Command Thread
-// ==========================================================
 
 static DWORD WINAPI ZMV42CommandThread(LPVOID)
 {
@@ -206,10 +211,6 @@ static DWORD WINAPI ZMV42CommandThread(LPVOID)
 
 	return 0;
 }
-
-// ==========================================================
-// HUD Test
-// ==========================================================
 
 void spawnTestElemZombie(int client)
 {
@@ -255,14 +256,8 @@ void testHudElems_f()
 	}
 
 	for (int i = 0; i < 4; i++)
-	{
 		spawnTestElemZombie(i);
-	}
 }
-
-// ==========================================================
-// V39 Zombies
-// ==========================================================
 
 void T6ZM::PatchT6ZM_V39()
 {
@@ -283,10 +278,6 @@ void T6ZM::PatchT6ZM_V39()
 
 	printf("[T6ZM] V39 safe patch complete\n");
 }
-
-// ==========================================================
-// V41 Zombies
-// ==========================================================
 
 void T6ZM::PatchT6ZM_V41()
 {
@@ -313,7 +304,6 @@ void T6ZM::PatchT6ZM_V41()
 
 	ZMSafeWriteByte(0xC0BF44, 0x33, "[ZM V41] _tu15");
 	ZMSafeWriteByte(0xC27F96, 0x33, "[ZM V41] online_tu15_zm");
-
 	ZMSafeWriteByte(0x46049B, 0xEB, "[ZM V41] fix jmp");
 	ZMSafeWriteByte(0x477830, 0xC3, "[ZM V41] return shield");
 	ZMSafeWriteByte(0x88B16F, 0x01, "[ZM V41] developer_script");
@@ -323,31 +313,12 @@ void T6ZM::PatchT6ZM_V41()
 	ZMSafeWriteByte(0x665410, 0xC3, "[ZM V41] shield");
 	ZMSafeWriteByte(0x668887, 0x01, "[ZM V41] gpad_enabled");
 	ZMSafeWriteByte(0x52E240, 0xC3, "[ZM V41] no Steam restart");
-
-	// Safe only for real V41. Do not copy to V42.
 	ZMSafeWriteByte(0x88B157, 0x01, "[ZM V41] systemlink visible");
 
 	ZMSafeStartConsoleThread((LPVOID)0x4A67F0);
 
-	// Keep disabled until safe boot is confirmed.
-	//MainPatchFunctions::HKS_MaterialHook.Initialize(0x6D0080, MainPatchFunctions::HKS_RegisterMaterial);
-	//MainPatchFunctions::HKS_MaterialHook.InstallHook();
-
-	//MainPatchFunctions::HKS_StringHook.Initialize(0x8964F0, MainPatchFunctions::HKS_ReturnString);
-	//MainPatchFunctions::HKS_StringHook.InstallHook();
-
-	//MainPatchFunctions::HKS_RawfileHook.Initialize(0x4A7550, MainPatchFunctions::HKS_LoadRawfile);
-	//MainPatchFunctions::HKS_RawfileHook.InstallHook();
-
-	//MainPatchFunctions::ScriptParseHook.Initialize(0x4F8E50, MainPatchFunctions::Load_ScriptParseTreeAsset);
-	//MainPatchFunctions::ScriptParseHook.InstallHook();
-
 	printf("[T6ZM] V41 safe patch complete\n");
 }
-
-// ==========================================================
-// V42 / Zombies V44
-// ==========================================================
 
 void T6ZM::PatchT6ZM_V42()
 {
@@ -366,15 +337,12 @@ void T6ZM::PatchT6ZM_V42()
 	SteamCommon::LoadOverlay();
 	DumpHandler::Initialize();
 
-	ForceZombieSystemLink();
+	HANDLE frontendThread = CreateThread(NULL, 0, ZMFrontendWaitThread, NULL, 0, NULL);
 
-	HANDLE commandThread = CreateThread(
-		NULL,
-		0,
-		ZMV42CommandThread,
-		NULL,
-		0,
-		NULL);
+	if (frontendThread)
+		CloseHandle(frontendThread);
+
+	HANDLE commandThread = CreateThread(NULL, 0, ZMV42CommandThread, NULL, 0, NULL);
 
 	if (commandThread)
 		CloseHandle(commandThread);
