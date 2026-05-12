@@ -84,18 +84,18 @@ static void SafeAddCommand(
 {
 	if (!Addresses::Cmd_AddCommandInternal || !name || !function || !command)
 	{
-		printf("[T6MP] SafeAddCommand skipped: %s\n", name ? name : "NULL");
+		printf("[MP] SafeAddCommand skipped: %s\n", name ? name : "NULL");
 		return;
 	}
 
 	__try
 	{
 		Addresses::Cmd_AddCommandInternal(name, function, command);
-		printf("[T6MP] command registered: %s\n", name);
+		printf("[MP] command registered: %s\n", name);
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		printf("[T6MP] Cmd_AddCommandInternal crashed: %s\n", name);
+		printf("[MP] Cmd_AddCommandInternal crashed: %s\n", name);
 	}
 }
 
@@ -113,7 +113,7 @@ static void SafeStartConsoleThread(LPVOID startupAddress)
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		printf("[T6MP] Console thread crashed\n");
+		printf("[MP] Console thread crashed\n");
 	}
 }
 
@@ -121,18 +121,18 @@ static void SafeCbufAddText(const char* text)
 {
 	if (!Addresses::Cbuf_AddText || !text)
 	{
-		printf("[V44] Cbuf_AddText missing\n");
+		printf("[MP] Cbuf_AddText missing\n");
 		return;
 	}
 
 	__try
 	{
-		printf("[V44] Cbuf_AddText: %s\n", text);
+		printf("[MP] Cbuf_AddText: %s\n", text);
 		Addresses::Cbuf_AddText(0, text);
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		printf("[V44] Cbuf_AddText crashed: %s\n", text);
+		printf("[MP] Cbuf_AddText crashed: %s\n", text);
 	}
 }
 
@@ -142,22 +142,22 @@ static void SafeCallSessionMode(DWORD address, const char* name)
 {
 	if (!address)
 	{
-		printf("[V44] %s address is NULL\n", name ? name : "SessionMode");
+		printf("[MP] %s address is NULL\n", name ? name : "SessionMode");
 		return;
 	}
 
 	__try
 	{
-		printf("[V44] calling %s at 0x%08X\n", name ? name : "SessionMode", address);
+		printf("[MP] calling %s at 0x%08X\n", name ? name : "SessionMode", address);
 
 		SessionModeFunc_t fn = (SessionModeFunc_t)address;
 		fn();
 
-		printf("[V44] %s finished\n", name ? name : "SessionMode");
+		printf("[MP] %s finished\n", name ? name : "SessionMode");
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		printf("[V44] %s crashed\n", name ? name : "SessionMode");
+		printf("[MP] %s crashed\n", name ? name : "SessionMode");
 	}
 }
 
@@ -183,7 +183,7 @@ void forcePrivateMode_f()
 
 void forceOffline_f()
 {
-	printf("[V44] forcing offline / LAN menu state\n");
+	printf("[MP] forcing offline / LAN menu state\n");
 
 	SafeCbufAddText("set onlinegame 0\n");
 	SafeCbufAddText("set systemlink 1\n");
@@ -196,7 +196,7 @@ void forceOffline_f()
 
 void openConsole_f()
 {
-	printf("[V44] forcing console dvars + toggleconsole\n");
+	printf("[MP] forcing console dvars + toggleconsole\n");
 
 	SafeCbufAddText("set developer 1\n");
 	SafeCbufAddText("set monkeytoy 0\n");
@@ -270,7 +270,7 @@ void T6MP::PatchT6MP_V40()
 	SafeWriteByte(0x6B6607, 0x01, "[V40] gpad_enabled");
 	SafeWriteByte(0xC1D910, 0x33, "[V40] _tu14");
 	SafeWriteByte(0xBE0F26, 0x33, "[V40] online_tu14_mp");
-	SafeWriteByte(0x4BE550, 0xC3, "[V40] Steam menu patch");
+	SafeWriteByte(0x4BE550, 0xC3, "[V40] Steam menu patchF");
 	SafeWriteByte(0x88A63F, 0x01, "[V40] developer");
 
 	SafeStartConsoleThread((LPVOID)0x54D4F0);
@@ -301,19 +301,19 @@ void T6MP::PatchT6MP_V43()
 	SafeAddCommand("autoChangeClass", Bots::autoChangeClass_f, &autoChangeClass_cmd);
 	SafeAddCommand("Notify", PopupNotify::Notify_f, &Notify_cmd);
 
-	SafeWriteByte(0x517AFB, 0xEB, "[V43] fix jmp");
-	SafeWriteByte(0x5DDC20, 0xC3, "[V43] unknown patch");
-	SafeWriteByte(0x88BEA7, 0x00, "[V43] lui_checksum_enabled");
-	SafeWriteByte(0x88C05F, 0x01, "[V43] xblive_rankedmatch");
-	SafeWriteByte(0x62FA61, 0x2F, "[V43] silentfail");
-	SafeWriteByte(0x4F0C0A, 0x00, "[V43] tu11_partymigrate");
-	SafeWriteByte(0x6BAB80, 0xC3, "[V43] WinMain patch");
-	SafeWriteByte(0x4E4DF7, 0x01, "[V43] gpad_enabled");
-	SafeWriteByte(0x5E0660, 0xC3, "[V43] Steam menu patch");
-	SafeWriteByte(0x88C107, 0x01, "[V43] developer_script");
-	SafeWriteByte(0x88C0EF, 0x01, "[V43] developer");
-	SafeWriteByte(0xBFF698, 0x33, "[V43] _tu17");
-	SafeWriteByte(0xBF04AE, 0x33, "[V43] online_tu17_mp");
+	SafeWriteByte(0x517AFB, 0xEB, "[MP] fix jmp");
+	SafeWriteByte(0x5DDC20, 0xC3, "[MP] unknown patch");
+	SafeWriteByte(0x88BEA7, 0x00, "[MP] lui_checksum_enabled");
+	SafeWriteByte(0x88C05F, 0x01, "[MP] xblive_rankedmatch");
+	SafeWriteByte(0x62FA61, 0x2F, "[MP] silentfail");
+	SafeWriteByte(0x4F0C0A, 0x00, "[MP] tu11_partymigrate");
+	SafeWriteByte(0x6BAB80, 0xC3, "[MP] WinMain patch");
+	SafeWriteByte(0x4E4DF7, 0x01, "[MP] gpad_enabled");
+	SafeWriteByte(0x5E0660, 0xC3, "[MP] Steam menu patch");
+	SafeWriteByte(0x88C107, 0x01, "[MP] developer_script");
+	SafeWriteByte(0x88C0EF, 0x01, "[MP] developer");
+	SafeWriteByte(0xBFF698, 0x33, "[MP] _tu17");
+	SafeWriteByte(0xBF04AE, 0x33, "[MP] online_tu17_mp");
 
 	SafeStartConsoleThread((LPVOID)0x473AD0);
 
@@ -336,8 +336,8 @@ void T6MP::PatchT6MP_V43()
 
 static DWORD WINAPI V44CommandThread(LPVOID)
 {
-	printf("[V44] command input ready\n");
-	printf("[V44] commands: help, openConsole, forceOffline, quit\n");
+	printf("[MP] command input ready\n");
+	printf("[MP] commands: help, openConsole, forceOffline, quit\n");
 
 	char input[256] = { 0 };
 
@@ -361,6 +361,7 @@ static DWORD WINAPI V44CommandThread(LPVOID)
 			printf("  openConsole\n");
 			printf("  forceOffline\n");
 			printf("  quit\n");
+			printf("  initOverlay\n");
 		}
 		else if (_stricmp(input, "openConsole") == 0)
 		{
@@ -372,12 +373,17 @@ static DWORD WINAPI V44CommandThread(LPVOID)
 		}
 		else if (_stricmp(input, "quit") == 0)
 		{
-			printf("[V44] closing command thread\n");
+			printf("[MP] closing command thread\n");
 			break;
 		}
 		else if (input[0])
 		{
-			printf("[V44] unknown command: %s\n", input);
+			printf("[MP] unknown command: %s\n", input);
+		}
+		else if (_stricmp(input, "initOverlay") == 0)
+		{
+			printf("[MP] retrying InGameConsole::Initialize\n");
+			InGameConsole::Initialize();
 		}
 
 		memset(input, 0, sizeof(input));
@@ -386,6 +392,28 @@ static DWORD WINAPI V44CommandThread(LPVOID)
 
 	return 0;
 }
+
+static DWORD WINAPI DelayedOverlayInitThread(LPVOID)
+{
+	printf("[MP] waiting before overlay init...\n");
+
+	Sleep(15000);
+
+	printf("[MP] auto initializing overlay...\n");
+
+	__try
+	{
+		InGameConsole::Initialize();
+		printf("[MP] overlay initialized\n");
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER)
+	{
+		printf("[MP] overlay init crashed\n");
+	}
+
+	return 0;
+}
+
 
 
 
@@ -401,17 +429,15 @@ void T6MP::PatchT6MP_V44()
 	freopen_s(&dummy, "CONOUT$", "w", stderr);
 	freopen_s(&dummy, "CONIN$", "r", stdin);
 
-	SetConsoleTitleA("T6M V44 Safe Console");
+	SetConsoleTitleA("MP Safe Console");
 
-	printf("[T6MP] V44 debug console initialized\n");
-	printf("[T6MP] V44 SAFE BOOT ONLY\n");
+	printf("[MP] MP debug console initialized\n");
+	printf("[MP] MP SAFE BOOT ONLY\n");
 
 	// Safe systems
 	SteamCommon::LoadOverlay();
 	DumpHandler::Initialize();
-
-	// Optional clean logger
-	//DebugConsole::Initialize();
+	DebugConsole::Initialize();
 
 	// SERVER STUFF broken on V44 right now
 	//ServerList::Initialize();
@@ -440,29 +466,17 @@ void T6MP::PatchT6MP_V44()
 	//static cmd_function_s forceOfflineMode_cmd; SafeAddCommand("forceOfflineMode", forceOfflineMode_f, &forceOfflineMode_cmd);
 	//static cmd_function_s forcePrivateMode_cmd; SafeAddCommand("forcePrivateMode", forcePrivateMode_f, &forcePrivateMode_cmd);
 
-	printf("[V44] testing InGameConsole::Initialize\n");
-
-	__try
-	{
-		InGameConsole::Initialize();
-		printf("[V44] InGameConsole initialized\n");
-	}
-	__except (EXCEPTION_EXECUTE_HANDLER)
-	{
-		printf("[V44] InGameConsole crashed\n");
-	}
-
-	HANDLE commandThread = CreateThread(
+	HANDLE overlayThread = CreateThread(
 		NULL,
 		0,
-		V44CommandThread,
+		DelayedOverlayInitThread,
 		NULL,
 		0,
 		NULL);
 
-	if (commandThread)
-		CloseHandle(commandThread);
+	if (overlayThread)
+		CloseHandle(overlayThread);
 
-	printf("[T6MP] V44 safe boot complete\n");
-	printf("[T6MP] Type help in this console\n");
+	printf("[MP] MP safe boot complete\n");
+	printf("[MP] Type help in this console\n");
 }

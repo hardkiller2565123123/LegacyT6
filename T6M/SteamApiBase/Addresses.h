@@ -125,6 +125,9 @@ public:
 	static DWORD ColorTableFloat;
 	static DWORD ColorTableByte;
 
+	
+	
+
 	// Ingame Console
 	static R_AddCmdDrawText_t R_AddCmdDrawText;
 	static DrawRotatedPic_t DrawRotatedPic;
