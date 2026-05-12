@@ -4,17 +4,15 @@ C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.target
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(14): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
-c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(6): warning C4005: 'ZM42_DVAR_DEVELOPER_SCRIPT' : macro redefinition
-          c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(3) : see previous definition of 'ZM42_DVAR_DEVELOPER_SCRIPT'
-c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(7): warning C4005: 'ZM42_DVAR_LUI_CHECKSUM_ENABLED' : macro redefinition
-          c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(4) : see previous definition of 'ZM42_DVAR_LUI_CHECKSUM_ENABLED'
-c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(8): warning C4005: 'ZM42_DVAR_XBLIVE_RANKEDMATCH' : macro redefinition
-          c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(5) : see previous definition of 'ZM42_DVAR_XBLIVE_RANKEDMATCH'
-c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(233): warning C4309: 'argument' : truncation of constant value
-c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(234): warning C4309: 'argument' : truncation of constant value
-  Addresses.cpp
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(408): warning C4309: 'argument' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6zm.cpp(409): warning C4309: 'argument' : truncation of constant value
+  PatchT6MP.cpp
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(13): warning C4091: 'typedef ' : ignored on left of 'cmd_function_s' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\t6.h(863): warning C4091: 'typedef ' : ignored on left of 'HudElem' when no variable is declared
 c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\xnp_stubs.h(14): warning C4351: new behavior: elements of array 'xNPAuthenticateResult::sessionToken' will be default initialized
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(460): warning C4309: 'argument' : truncation of constant value
+c:\users\dylan\downloads\sourcecode\t6m source\t6m\steamapibase\patcht6mp.cpp(461): warning C4309: 'argument' : truncation of constant value
   Generating Code...
+     Creating library ..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.lib and object ..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.exp
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   T6M.vcxproj -> C:\Users\dylan\Downloads\SourceCode\T6M Source\T6M\SteamApiBase\..\..\..\Program Files\Delta Game\COD Black Ops 2\steam_api.dll

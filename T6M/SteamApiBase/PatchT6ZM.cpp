@@ -1,19 +1,24 @@
 #include "STDInc.h"
 
-#define ZM42_DVAR_DEVELOPER_SCRIPT      0x025389F0
-#define ZM42_DVAR_LUI_CHECKSUM_ENABLED  0x025B8FB8
-#define ZM42_DVAR_XBLIVE_RANKEDMATCH    0x025B8DB0
 #define ZM42_DVAR_DEVELOPER_SCRIPT      0x025389D0
 #define ZM42_DVAR_LUI_CHECKSUM_ENABLED  0x025B9BF8
 #define ZM42_DVAR_XBLIVE_RANKEDMATCH    0x025B8BD8
 #define ZM42_DVAR_ONLINEGAME            0x025389F4
 #define ZM42_DVAR_XBLIVE_PRIVATEMATCH   0x02538A44
 
-static bool ZMSafeWriteBytes(DWORD address, const BYTE* data, SIZE_T size, const char* name)
+static bool g_ZM42LoggedDvarSuccess = false;
+
+static bool ZMSafeWriteBytes(
+	DWORD address,
+	const BYTE* data,
+	SIZE_T size,
+	const char* name)
 {
 	if (!address || !data || !size)
 	{
-		printf("%s invalid args\n", name ? name : "ZMSafeWriteBytes");
+		if (name)
+			printf("%s invalid args\n", name);
+
 		return false;
 	}
 
@@ -21,26 +26,108 @@ static bool ZMSafeWriteBytes(DWORD address, const BYTE* data, SIZE_T size, const
 	{
 		DWORD oldProtect = 0;
 
-		if (!VirtualProtect((LPVOID)address, size, PAGE_EXECUTE_READWRITE, &oldProtect))
+		if (!VirtualProtect(
+			(LPVOID)address,
+			size,
+			PAGE_EXECUTE_READWRITE,
+			&oldProtect))
 		{
-			printf("%s VirtualProtect failed at 0x%08X err=%lu\n", name ? name : "ZMSafeWriteBytes", address, GetLastError());
+			if (name)
+			{
+				printf(
+					"%s VirtualProtect failed at 0x%08X err=%lu\n",
+					name,
+					address,
+					GetLastError());
+			}
+
 			return false;
 		}
 
 		memcpy((void*)address, data, size);
-		FlushInstructionCache(GetCurrentProcess(), (LPCVOID)address, size);
+
+		FlushInstructionCache(
+			GetCurrentProcess(),
+			(LPCVOID)address,
+			size);
 
 		DWORD temp = 0;
-		VirtualProtect((LPVOID)address, size, oldProtect, &temp);
 
-		printf("%s write OK -> 0x%08X size=%u\n", name ? name : "ZMSafeWriteBytes", address, (unsigned int)size);
+		VirtualProtect(
+			(LPVOID)address,
+			size,
+			oldProtect,
+			&temp);
+
+		// ONLY PRINT WHEN NAME EXISTS
+		if (name)
+		{
+			printf(
+				"%s write OK -> 0x%08X size=%u\n",
+				name,
+				address,
+				(unsigned int)size);
+		}
+
 		return true;
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
-		printf("%s write crashed -> 0x%08X size=%u\n", name ? name : "ZMSafeWriteBytes", address, (unsigned int)size);
+		if (name)
+		{
+			printf(
+				"%s write crashed -> 0x%08X size=%u\n",
+				name,
+				address,
+				(unsigned int)size);
+		}
+
 		return false;
 	}
+}
+
+enum ZMLogColor
+{
+	ZM_COLOR_DEFAULT = 7,
+	ZM_COLOR_INFO = 11,
+	ZM_COLOR_OK = 10,
+	ZM_COLOR_WARN = 14,
+	ZM_COLOR_ERROR = 12
+};
+
+static char g_LastZMLog[512] = { 0 };
+static int g_LastZMLogRepeat = 0;
+
+static void ZMLog(ZMLogColor color, const char* label, const char* fmt, ...)
+{
+	char message[512] = { 0 };
+	char finalLine[768] = { 0 };
+
+	va_list args;
+	va_start(args, fmt);
+	_vsnprintf_s(message, sizeof(message), _TRUNCATE, fmt, args);
+	va_end(args);
+
+	sprintf_s(finalLine, sizeof(finalLine), "[%-5s] %s", label ? label : "INFO", message);
+
+	if (_stricmp(g_LastZMLog, finalLine) == 0)
+	{
+		g_LastZMLogRepeat++;
+		return;
+	}
+
+	if (g_LastZMLogRepeat > 0)
+	{
+		printf("[SKIP ] previous line repeated %d times\n", g_LastZMLogRepeat);
+		g_LastZMLogRepeat = 0;
+	}
+
+	strcpy_s(g_LastZMLog, sizeof(g_LastZMLog), finalLine);
+
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console, color);
+	printf("%s\n", finalLine);
+	SetConsoleTextAttribute(console, ZM_COLOR_DEFAULT);
 }
 
 static bool ZMSafeWriteByte(DWORD address, BYTE value, const char* name)
@@ -65,41 +152,52 @@ static bool ZMSafeReadDWORD(DWORD address, DWORD* out)
 	}
 }
 
-static bool ZMSafeSetDvarBoolByPointer(DWORD pointerAddress, bool enabled, const char* name)
+static bool ZMSafeSetDvarBoolByPointer(DWORD pointerAddress, bool enabled, const char* name, bool quiet)
 {
 	DWORD dvar = 0;
 
 	if (!ZMSafeReadDWORD(pointerAddress, &dvar) || !dvar)
 	{
-		printf("[ZM V42] %s dvar pointer is NULL\n", name);
+		if (!quiet)
+			ZMLog(ZM_COLOR_ERROR, "ERROR", "%s dvar pointer is NULL", name);
+
 		return false;
 	}
 
 	BYTE value = enabled ? 1 : 0;
 
-	ZMSafeWriteByte(dvar + 0x18, value, name);
-	ZMSafeWriteByte(dvar + 0x1C, value, name);
+	ZMSafeWriteBytes(dvar + 0x18, &value, 1, quiet ? NULL : name);
+	ZMSafeWriteBytes(dvar + 0x1C, &value, 1, quiet ? NULL : name);
 
-	printf("[ZM V42] %s set -> ptr 0x%08X dvar 0x%08X value %d\n", name, pointerAddress, dvar, value);
 	return true;
 }
 
-static void ForceZombieSystemLinkOnce()
+static bool ForceZombieSystemLinkOnce(bool quiet)
 {
-	printf("[ZM V42] applying frontend dvar flags\n");
+	bool ok = true;
 
-	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_DEVELOPER_SCRIPT, true, "[ZM V42] developer_script");
-	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_LUI_CHECKSUM_ENABLED, false, "[ZM V42] lui_checksum_enabled");
-	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_RANKEDMATCH, false, "[ZM V42] xblive_rankedmatch");
-	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_ONLINEGAME, false, "[ZM V42] onlinegame");
-	ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_PRIVATEMATCH, true, "[ZM V42] xblive_privatematch");
+	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_DEVELOPER_SCRIPT, true, "[ZM V42] developer_script", quiet);
+	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_LUI_CHECKSUM_ENABLED, true, "[ZM V42] lui_checksum_enabled", quiet);
+	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_RANKEDMATCH, true, "[ZM V42] xblive_rankedmatch", quiet);
+	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_ONLINEGAME, true, "[ZM V42] onlinegame", quiet);
+	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_PRIVATEMATCH, true, "[ZM V42] xblive_privatematch", quiet);
 
-	printf("[ZM V42] frontend dvar pass finished\n");
+	if (ok && !g_ZM42LoggedDvarSuccess)
+	{
+		ZMLog(ZM_COLOR_OK, "ZM42", "frontend dvars forced OK");
+		g_ZM42LoggedDvarSuccess = true;
+	}
+	else if (!ok && !quiet)
+	{
+		printf("[ZM V42] frontend dvars not ready\n");
+	}
+
+	return ok;
 }
 
 static DWORD WINAPI ZMFrontendWaitThread(LPVOID)
 {
-	printf("[ZM V42] waiting for frontend dvars...\n");
+	ZMLog(ZM_COLOR_WARN, "WARN", "waiting for frontend dvars...");
 
 	for (int i = 0; i < 600; i++)
 	{
@@ -122,13 +220,90 @@ static DWORD WINAPI ZMFrontendWaitThread(LPVOID)
 
 	for (int i = 0; i < 60; i++)
 	{
-		ForceZombieSystemLinkOnce();
+		ForceZombieSystemLinkOnce(i != 0);
 		Sleep(500);
 	}
 
 	printf("[ZM V42] frontend dvar forcing finished\n");
 	return 0;
 }
+
+// ============================================================
+// ZM GSC STUB PATCH
+// ============================================================
+
+static bool ZMWriteFile(const char* path, const char* data)
+{
+	if (!path || !data)
+		return false;
+
+	FILE* file = nullptr;
+
+	if (fopen_s(&file, path, "wb") != 0 || !file)
+	{
+		printf("[T6ZM] failed to create %s\n", path);
+		return false;
+	}
+
+	fwrite(data, 1, strlen(data), file);
+	fclose(file);
+
+	printf("[T6ZM] wrote %s\n", path);
+	return true;
+}
+
+static void ZMCreateDirectories()
+{
+	CreateDirectoryA("data", NULL);
+
+	CreateDirectoryA("data\\scripts", NULL);
+	CreateDirectoryA("data\\scripts\\zm", NULL);
+	CreateDirectoryA("data\\scripts\\zm\\maps", NULL);
+	CreateDirectoryA("data\\scripts\\zm\\maps\\mp", NULL);
+	CreateDirectoryA("data\\scripts\\zm\\maps\\mp\\gametypes_zm", NULL);
+
+	CreateDirectoryA("data\\maps", NULL);
+	CreateDirectoryA("data\\maps\\mp", NULL);
+	CreateDirectoryA("data\\maps\\mp\\gametypes_zm", NULL);
+}
+
+static void ZMInstallGSCStubs()
+{
+	ZMCreateDirectories();
+
+	const char* scoreStub =
+		R"(
+init()
+{
+}
+
+main()
+{
+}
+
+checkscorelimit()
+{
+	return false;
+}
+
+checkteamscorelimits(team)
+{
+	return false;
+}
+)";
+
+	ZMWriteFile("data\\scripts\\zm\\_globallogic_score.gsc", scoreStub);
+	ZMWriteFile("data\\scripts\\zm\\maps\\mp\\gametypes_zm\\_globallogic_score.gsc", scoreStub);
+
+	// This is the important one for the error shown.
+	ZMWriteFile("data\\maps\\mp\\gametypes_zm\\_globallogic_score.gsc", scoreStub);
+
+	printf("[T6ZM] Zombies GSC score stubs installed\n");
+}
+
+
+
+
 
 static void ZMSafeAddCommand(const char* name, void(__cdecl* function)(), cmd_function_s* command)
 {
@@ -331,11 +506,12 @@ void T6ZM::PatchT6ZM_V42()
 
 	SetConsoleTitleA("T6ZM V42 Safe Console");
 
-	printf("[T6ZM] V42 debug console initialized\n");
+	ZMLog(ZM_COLOR_INFO, "T6ZM", "V42 debug console initialized");
 	printf("[T6ZM] V42 SAFE BOOT ONLY\n");
 
 	SteamCommon::LoadOverlay();
 	DumpHandler::Initialize();
+	ZMInstallGSCStubs();
 
 	HANDLE frontendThread = CreateThread(NULL, 0, ZMFrontendWaitThread, NULL, 0, NULL);
 

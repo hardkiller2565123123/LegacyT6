@@ -1021,14 +1021,7 @@ void Addresses::Assign()
 
 			// Offline / LAN menu string references only
 			// Not functions. Do not call these directly.
-			#define V44_MENU_OFFLINE_STRING        0x00BFF3D8 // MENU_OFFLINE
-			#define V44_MENU_SYSTEMLINK_LOBBY      0x00BD15E8 // menu_systemlink_lobby
-			#define V44_MENU_SYSTEMLINK_STRING2    0x00C2C1C8 // menu_systemlink...
-			#define V44_SYSTEMLINK_STRING          0x00C2E428 // systemlink
-			#define V44_ONLINEGAME_STRING          0x00C5F25C // onlinegame
-			#define V44_OFFLINEHOST_STRING         0x00C0BD9C // offlinehost
-			#define V44_XBLIVE_LOGGEDIN_STRING     0x00C27B20 // xblive_loggedin
-			#define V44_XBLIVE_PRIVATEMATCH_STRING 0x00C0EB30 // xblive_privatematch
+
 
 			break;
 		}
