@@ -961,7 +961,7 @@ void Addresses::Assign()
 			// Colored name patching disabled
 			Addresses::ColoredName = 0x00;
 			Addresses::ClientUserinfoChanged = 0x00;
-			Addresses::GetClientName = 0x00;
+			Addresses::GetClientName = 0x00C04930;
 			Addresses::GetClientName1 = 0x00;
 			Addresses::GetClientName2 = 0x00;
 			Addresses::GetClientName3 = 0x00;
@@ -979,8 +979,8 @@ void Addresses::Assign()
 			Addresses::RendererFrameO = 0x00730EB5;
 			Addresses::RendererStart = 0x00000000;
 			Addresses::RendererStartO = 0x00000000;
-			Addresses::RendererWidth = 0x00;
-			Addresses::RendererHeight = 0x00;
+			Addresses::RendererWidth = 0x00C48E1C	;
+			Addresses::RendererHeight = 0x00C5AEAC;
 			Addresses::InputUIToCL = 0x00;
 			Addresses::InputExecBinding = 0x00;
 			Addresses::InputExecBindingO = 0x00;
@@ -989,7 +989,7 @@ void Addresses::Assign()
 			Addresses::InputKeyEvent = 0x5D0980;
 			Addresses::InputKeyEventO = 0x5D0985;
 			Addresses::InputMouseX = 0x00;
-			Addresses::InputMouseY = 0x00;
+			Addresses::InputMouseY = 0x0;
 			Addresses::InputHWND = 0x00;
 
 			// SystemLink server list disabled
@@ -1018,9 +1018,6 @@ void Addresses::Assign()
 			Addresses::MissingDLC = 0x00;
 			Addresses::CheckFlag = 0x00;
 			Addresses::DLCAppID = 0x00;
-
-			// Offline / LAN menu string references only
-			// Not functions. Do not call these directly.
 
 
 			break;

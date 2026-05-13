@@ -13,7 +13,6 @@
   <ItemGroup>
     <ClCompile Include="Addresses.cpp" />
     <ClCompile Include="Auth.cpp" />
-    <ClCompile Include="BadFunctions.cpp" />
     <ClCompile Include="bdProfile.cpp" />
     <ClCompile Include="BitBuffer.cpp" />
     <ClCompile Include="ByteBuffer.cpp" />
@@ -25,12 +24,16 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Crypto.cpp" />
     <ClCompile Include="DebugConsole.cpp" />
+    <ClCompile Include="Define.h" />
     <ClCompile Include="DLC.cpp" />
     <ClCompile Include="DumpHandler.cpp" />
     <ClCompile Include="CEG.cpp" />
     <ClCompile Include="dw_Handler.cpp" />
     <ClCompile Include="dw_match.cpp" />
     <ClCompile Include="dwMessage.cpp" />
+    <ClCompile Include="PatchFunctions.cpp" />
+    <ClCompile Include="PatchT6MP_V40.cpp" />
+    <ClCompile Include="PatchT6MP_V43.cpp" />
     <ClCompile Include="PM_SendMessage.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="Entry.cpp" />
@@ -123,6 +126,7 @@
     <ClInclude Include="MainPatchFunctions.h" />
     <ClInclude Include="Notify.h" />
     <ClInclude Include="Patch.h" />
+    <ClInclude Include="PatchFunctions.h" />
     <ClInclude Include="PatchT6MP.h" />
     <ClInclude Include="PM_SendMessage.h" />
     <ClInclude Include="Server.h" />
@@ -133,6 +137,7 @@
     <ClInclude Include="Scriptability.h" />
     <ClInclude Include="ServerList.h" />
     <ClInclude Include="STDInc.h" />
+    <ClInclude Include="STDPatches.h" />
     <ClInclude Include="Steam\Classes\ProxiedClasses.h" />
     <ClInclude Include="Steam\Classes\ProxiedGameCoordinator.h" />
     <ClInclude Include="Steam\Classes\ProxiedGameServer.h" />

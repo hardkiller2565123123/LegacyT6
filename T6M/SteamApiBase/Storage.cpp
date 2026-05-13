@@ -1,6 +1,8 @@
 #include "STDInc.h"
 #include <fstream>
 #include "DebugConsole.h"
+#include "STDPatches.h"
+
 
 void Storage::dw_storage_get_publisher_file(bdByteBuffer& data)
 {

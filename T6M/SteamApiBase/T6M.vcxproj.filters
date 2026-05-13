@@ -196,12 +196,6 @@
     <ClCompile Include="Patch.cpp">
       <Filter>Source Files\Base</Filter>
     </ClCompile>
-    <ClCompile Include="PatchT6MP.cpp">
-      <Filter>Source Files\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="PatchT6ZM.cpp">
-      <Filter>Source Files\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Patterns.cpp">
       <Filter>Source Files\Base</Filter>
     </ClCompile>
@@ -232,11 +226,26 @@
     <ClCompile Include="Zone.cpp">
       <Filter>Source Files\Base</Filter>
     </ClCompile>
-    <ClCompile Include="BadFunctions.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="PatchT6MP.cpp">
+      <Filter>Source Files\T6Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchT6ZM.cpp">
+      <Filter>Source Files\T6Patches</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchT6MP_V43.cpp">
+      <Filter>Source Files\T6Patches\OldPatchStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchT6MP_V40.cpp">
+      <Filter>Source Files\T6Patches\OldPatchStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Define.h">
+      <Filter>Source Files\T6Patches\Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchFunctions.cpp">
+      <Filter>Source Files\T6Patches</Filter>
     </ClCompile>
     <ClCompile Include="DebugConsole.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\T6Patches</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -930,12 +939,6 @@
     <ClInclude Include="Patch.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
-    <ClInclude Include="PatchT6MP.h">
-      <Filter>Source Files\headers</Filter>
-    </ClInclude>
-    <ClInclude Include="PatchT6ZM.h">
-      <Filter>Source Files\headers</Filter>
-    </ClInclude>
     <ClInclude Include="Patterns.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
@@ -1005,8 +1008,20 @@
     <ClInclude Include="Zone.h">
       <Filter>Source Files\headers</Filter>
     </ClInclude>
+    <ClInclude Include="STDPatches.h">
+      <Filter>Source Files\T6Patches\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchFunctions.h">
+      <Filter>Source Files\T6Patches\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchT6MP.h">
+      <Filter>Source Files\T6Patches\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchT6ZM.h">
+      <Filter>Source Files\T6Patches\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="DebugConsole.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\T6Patches\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1039,6 +1054,15 @@
     </Filter>
     <Filter Include="Source Files\Base">
       <UniqueIdentifier>{8c35513c-ad29-44aa-8ec8-6ed8f633bf89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\T6Patches">
+      <UniqueIdentifier>{8ef5f2bf-06f0-46a8-8e8c-41af08cf9bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\T6Patches\Headers">
+      <UniqueIdentifier>{6d8e3bde-bfaf-47f1-bcaa-fe0d2b00408d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\T6Patches\OldPatchStuff">
+      <UniqueIdentifier>{9ca1abb2-cd5e-496e-bbf2-e61af95d1a06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

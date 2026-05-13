@@ -1,4 +1,7 @@
 #include "STDInc.h"
+
+
+
 struct ScriptParseTreeEntry
 {
 	RawFile rawfile;
@@ -39,31 +42,142 @@ DWORD RunCmdSync(const char* cmd, const char* workingDir, char* cmdline)
 	return result;
 }
 // Kinda ugly, but that's the most efficient way for now.
-void CompileGSCFile(const char* rel, const char* file, std::string &buffer)
+static void ReplaceAllText(std::string& text, const char* from, const char* to)
+{
+	if (!from || !to || !from[0])
+		return;
+
+	size_t pos = 0;
+	size_t fromLen = strlen(from);
+	size_t toLen = strlen(to);
+
+	while ((pos = text.find(from, pos)) != std::string::npos)
+	{
+		text.replace(pos, fromLen, to);
+		pos += toLen;
+	}
+}
+
+static bool IsRankScriptPath(const char* rel)
+{
+	if (!rel)
+		return false;
+
+	char lower[260] = { 0 };
+	strcpy_s(lower, sizeof(lower), rel);
+	_strlwr_s(lower, sizeof(lower));
+
+	return
+		strstr(lower, "maps/mp/gametypes/_rank.gsc") != NULL ||
+		strstr(lower, "maps\\mp\\gametypes\\_rank.gsc") != NULL ||
+		strstr(lower, "maps/mp/gametypes/_rank") != NULL ||
+		strstr(lower, "maps\\mp\\gametypes\\_rank") != NULL ||
+		strstr(lower, "scripts/mp/ranked.gsc") != NULL ||
+		strstr(lower, "ranked.gsc") != NULL;
+}
+
+void CompileGSCFile(const char* rel, const char* file, std::string& buffer)
 {
 	buffer.clear();
 
-	std::string compiler = hString::va("%s/UserData/Scriptability/Compiler.exe", FileIO::GetCurrentDir());
-	std::string workingDir = hString::va("%s/UserData/Scriptability/", FileIO::GetCurrentDir());
-	std::string cmdLine = hString::va("compile \"%s\" \"%s\" temp.dat", rel, file);
+	std::string compiler = hString::va(
+		"%s/UserData/Scriptability/Compiler.exe",
+		FileIO::GetCurrentDir());
+
+	std::string workingDir = hString::va(
+		"%s/UserData/Scriptability/",
+		FileIO::GetCurrentDir());
+
+	std::string compileInput = file;
+
+	std::string tempSourcePath = hString::va(
+		"%s/UserData/Scriptability/temp_rank_patch.gsc",
+		FileIO::GetCurrentDir());
+
+	if (IsRankScriptPath(rel))
+	{
+		std::basic_string<unsigned char> original;
+
+		if (FileIO::ReadFileIntoBuffer(file, original))
+		{
+			std::string patched;
+			patched.append(original.begin(), original.end());
+
+			// BO2 V44 does not expose this external for custom-compiled scripts.
+			ReplaceAllText(
+				patched,
+				"maps\\mp\\gametypes\\_globallogic::totalplayercount()",
+				"level.players.size");
+
+			ReplaceAllText(
+				patched,
+				"maps/mp/gametypes/_globallogic::totalplayercount()",
+				"level.players.size");
+
+			ReplaceAllText(
+				patched,
+				"totalplayercount()",
+				"level.players.size");
+
+			ReplaceAllText(
+				patched,
+				"totalplayercount( )",
+				"level.players.size");
+
+			FILE* fp = NULL;
+			fopen_s(&fp, tempSourcePath.c_str(), "wb");
+
+			if (fp)
+			{
+				fwrite(patched.data(), 1, patched.size(), fp);
+				fclose(fp);
+
+				compileInput = tempSourcePath;
+
+				if (Addresses::Com_Printf)
+				{
+					Addresses::Com_Printf(
+						hString::va("[Script] patched rank script before compile: %s\n", rel));
+				}
+			}
+		}
+	}
+
+	std::string cmdLine = hString::va(
+		"compile \"%s\" \"%s\" temp.dat",
+		rel,
+		compileInput.c_str());
 
 	RunCmdSync(compiler.data(), workingDir.data(), (char*)cmdLine.data());
 
-	std::basic_string<unsigned char> _buffer;
-	if (FileIO::ReadFileIntoBuffer("UserData/Scriptability/temp.dat", _buffer))
+	std::basic_string<unsigned char> compiledBuffer;
+
+	if (FileIO::ReadFileIntoBuffer("UserData/Scriptability/temp.dat", compiledBuffer))
 	{
-		buffer.append(_buffer.begin(), _buffer.end());
+		buffer.append(compiledBuffer.begin(), compiledBuffer.end());
 		FileIO::DeleteFile("UserData/Scriptability/temp.dat");
 	}
+
+	DeleteFileA(tempSourcePath.c_str());
 }
+
+static bool IsRankGsc(const char* name)
+{
+	return name &&
+		(_stricmp(name, "maps/mp/gametypes/_rank.gsc") == 0 ||
+			_stricmp(name, "maps\\mp\\gametypes\\_rank.gsc") == 0);
+}
+
 XAssetHeader Scr_LoadScriptInternal_Stub(XAssetType type, const char *name, bool errorIfMissing, int waitTime)
 {
+
 	XAssetHeader header;
 	if (scripParseTreePool.find(name) != scripParseTreePool.end())
 	{
 		header.rawfile = &scripParseTreePool[name].rawfile;
 	}
-	else if (Addresses::FS_FileExists(name))
+
+	else if (Addresses::FS_FileExists(name) || IsRankGsc(name))
 	{
 		scripParseTreePool[name] = ScriptParseTreeEntry();
 		ScriptParseTreeEntry* entry = &scripParseTreePool[name];
@@ -76,13 +190,20 @@ XAssetHeader Scr_LoadScriptInternal_Stub(XAssetType type, const char *name, bool
 		Addresses::FS_FreeFile(entry->rawfile.Buffer);
 
 		// Determine if GSC is compiled
-		if (*(DWORD*)entry->rawfile.Buffer != 0x43534780)
+		if (entry->buffer.size() < 4 || *(DWORD*)entry->buffer.data() != 0x43534780)
 		{
 			Addresses::Com_Printf(hString::va("Script '%s' is not compiled. Compiling...\n", entry->name.data()));
 
 			FILE* fp = 0;
 			char file[256] = { 0 };
-			Addresses::FS_GetFileOsPath(name, file);
+			if (IsRankGsc(name))
+			{
+				sprintf_s(file, sizeof(file), "%s\\Maps\\MP\\GameTypes\\_rank.gsc", FileIO::GetCurrentDir());
+			}
+			else
+			{
+				Addresses::FS_GetFileOsPath(name, file);
+			}
 
 			CompileGSCFile(name, file, entry->buffer);
 

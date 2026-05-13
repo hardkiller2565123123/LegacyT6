@@ -1,12 +1,8 @@
 #include "STDInc.h"
-
-#define ZM42_DVAR_DEVELOPER_SCRIPT      0x025389D0
-#define ZM42_DVAR_LUI_CHECKSUM_ENABLED  0x025B9BF8
-#define ZM42_DVAR_XBLIVE_RANKEDMATCH    0x025B8BD8
-#define ZM42_DVAR_ONLINEGAME            0x025389F4
-#define ZM42_DVAR_XBLIVE_PRIVATEMATCH   0x02538A44
+#include "Define.h"
 
 static bool g_ZM42LoggedDvarSuccess = false;
+
 
 static bool ZMSafeWriteBytes(
 	DWORD address,
@@ -181,6 +177,7 @@ static bool ForceZombieSystemLinkOnce(bool quiet)
 	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_RANKEDMATCH, true, "[ZM V42] xblive_rankedmatch", quiet);
 	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_ONLINEGAME, true, "[ZM V42] onlinegame", quiet);
 	ok &= ZMSafeSetDvarBoolByPointer(ZM42_DVAR_XBLIVE_PRIVATEMATCH, true, "[ZM V42] xblive_privatematch", quiet);
+	
 
 	if (ok && !g_ZM42LoggedDvarSuccess)
 	{

@@ -1,5 +1,6 @@
 #include "STDInc.h"
 #include "CEG.h"
+#include "STDPatches.h"
 
 static DWORD GetGameSignature()
 {
